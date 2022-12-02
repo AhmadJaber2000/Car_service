@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "631115215358",
+    "project_id": "car-ser",
+    "storage_bucket": "car-ser.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:631115215358:android:65ce2d4f5c5ae0308890af",
+        "android_client_info": {
+          "package_name": "com.instaflutter.Car_service"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "631115215358-o7406sq1r0f4tohfc315v8matcknfi1l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmsoWlKjmg5vJAT0XAbpb7XwrRDZVkpkU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "631115215358-o7406sq1r0f4tohfc315v8matcknfi1l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
