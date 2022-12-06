@@ -9,7 +9,9 @@
     <application
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        android:label="Car Service">
+        android:label="Car Service"
+        android:enableOnBackInvokedCallback="true">
+
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBpwXqiBcUMrsDe8RmTknQUTZXCk9SIQGk"/>
         <activity

@@ -1,7 +1,4 @@
 import 'dart:math';
-
-import 'package:Car_service/constants.dart';
-import 'package:Car_service/model/user.dart';
 import 'package:Car_service/services/helper.dart';
 import 'package:Car_service/ui/User_cart/UserCart.dart';
 import 'package:Car_service/ui/auth/authentication_bloc.dart';
@@ -108,34 +105,6 @@ class _HomeState extends State<HomeScreen> {
               SizedBox(
                 height: 20,
               ),
-              /*user.profilePictureURL == ''
-                  ? CircleAvatar(
-                      radius: 35,
-                      backgroundColor: Colors.grey.shade400,
-                      child: ClipOval(
-                        child: SizedBox(
-                          width: 70,
-                          height: 70,
-                          child: Image.asset(
-                            'assets/images/placeholder.jpg',
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    )
-                  : displayCircleImage(user.profilePictureURL, 80, false),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(user.fullName()),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text("Hello " + user.fullName()),
-              ),*/
-              /*Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(user.userID),
-              ),*/
               Expanded(
                 child: Stack(
                   children: [
@@ -154,16 +123,7 @@ class _HomeState extends State<HomeScreen> {
                       itemBuilder: (context, index) => UserPage(
                         itemindex: index,
                         userCart: usercard[index],
-                        press: () {
-                          /* Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DetailsScreen(
-                            product: products[index],
-                          ),
-                        ),
-                      );*/
-                        },
+                        press: () {},
                       ),
                     ),
                   ],

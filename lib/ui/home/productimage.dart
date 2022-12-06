@@ -21,13 +21,11 @@ class ProductImage extends StatelessWidget {
       child: Stack(
         children: [
           Container(
-            height: size.width * 0.7, //0.7
-            width: size.width * 0.7, //size.width * 0.7, //0.7
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50),
-              image: DecorationImage(image: AssetImage(image)),
-              color: Colors.white,
-              shape: BoxShape.rectangle,
+            height: size.width * 0.7,
+            width: size.width * 0.7,
+            child: CircleAvatar(
+              radius: 50,
+              backgroundImage: AssetImage(image),
             ),
           ),
           //Image.asset(image),

@@ -16,7 +16,7 @@ class _CallMechanicState extends State<CallMechanic> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: HomeAppBar(),
-      body: GoogleMapView(RolType.mechanic),
+      body: GoogleMapView(RoleType.mechanic),
     );
   }
 

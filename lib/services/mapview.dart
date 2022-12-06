@@ -14,7 +14,9 @@ import 'location_service.dart';
 
 class GoogleMapView extends StatefulWidget {
   final String roleType;
+
   GoogleMapView(this.roleType);
+
   @override
   _GoogleMapViewState createState() => _GoogleMapViewState();
 }
@@ -22,7 +24,7 @@ class GoogleMapView extends StatefulWidget {
 class _GoogleMapViewState extends State<GoogleMapView> {
   Set<Marker> myMarkers = HashSet<Marker>();
   final Completer<GoogleMapController> _controller = Completer();
-  // ShopService shopService=ShopService(shopRepository: ShopAPI());
+
   late BitmapDescriptor customDescriptor;
   late LocationData myLocation;
   static const CameraPosition _initialCameraPosition = CameraPosition(
@@ -40,7 +42,6 @@ class _GoogleMapViewState extends State<GoogleMapView> {
   }
 
   functions() async {
-    await listshops();
     getCustomMarker();
     await _getMyLocation();
     await setMarkerCurrentLocation();

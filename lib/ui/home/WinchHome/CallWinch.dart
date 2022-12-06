@@ -15,7 +15,7 @@ class _CallWinchState extends State<CallWinch> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: HomeAppBar(),
-      body: GoogleMapView(RolType.winch),
+      body: GoogleMapView(RoleType.winch),
     );
   }
 

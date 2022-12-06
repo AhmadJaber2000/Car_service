@@ -2,19 +2,15 @@ import 'package:Car_service/constants.dart';
 import 'package:Car_service/services/helper.dart';
 import 'package:Car_service/ui/auth/authentication_bloc.dart';
 import 'package:Car_service/ui/auth/login/login_bloc.dart';
-import 'package:Car_service/ui/home/MechanicHome/MechanicHome.dart';
-import 'package:Car_service/ui/home/WinchHome/WinchHome.dart';
-import 'package:Car_service/ui/home/home_screen.dart';
 import 'package:Car_service/ui/loading_cubit.dart';
 import 'package:Car_service/viewmodel/ViewModel.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../resetPasswordScreen/reset_password_screen.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -23,13 +19,10 @@ class _LoginPageState extends State<LoginScreen> {
   String? email, password;
   final GlobalKey<FormState> _key = GlobalKey();
   AutovalidateMode _validate = AutovalidateMode.disabled;
-  bool _isObscure3 = true;
   bool visible = false;
-  final _formkey = GlobalKey<FormState>();
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
 
-  final _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return BlocProvider<LoginBloc>(
@@ -173,11 +166,11 @@ class _LoginPageState extends State<LoginScreen> {
                               fixedSize: Size.fromWidth(
                                   MediaQuery.of(context).size.width / 1.5),
                               padding: const EdgeInsets.symmetric(vertical: 16),
-                              backgroundColor: const Color(0xffd3a625),
+                              backgroundColor: primecolor,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(25.0),
                                 side: const BorderSide(
-                                  color: Color(0xffd3a625),
+                                  color: primecolor,
                                 ),
                               ),
                             ),
@@ -258,22 +251,22 @@ class _LoginPageState extends State<LoginScreen> {
     );
   }
 
-  void signIn(String email, String password) async {
-    if (_formkey.currentState!.validate()) {
-      try {
-        UserCredential userCredential =
-            await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: email,
-          password: password,
-        );
-        ViewModel.route(context);
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'user-not-found') {
-          print('No user found for that email.');
-        } else if (e.code == 'wrong-password') {
-          print('Wrong password provided for that user.');
-        }
-      }
-    }
-  }
+  // void signIn(String email, String password) async {
+  //   if (_formkey.currentState!.validate()) {
+  //     try {
+  //       UserCredential userCredential =
+  //           await FirebaseAuth.instance.signInWithEmailAndPassword(
+  //         email: email,
+  //         password: password,
+  //       );
+  //       ViewModel.route(context);
+  //     } on FirebaseAuthException catch (e) {
+  //       if (e.code == 'user-not-found') {
+  //         print('No user found for that email.');
+  //       } else if (e.code == 'wrong-password') {
+  //         print('Wrong password provided for that user.');
+  //       }
+  //     }
+  //   }
+  // }
 }

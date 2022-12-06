@@ -60,7 +60,7 @@ class UserPage extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 15),
                 height: 160,
-                width: 250,
+                width: 200,
                 child: Image.asset(
                   userCart.image,
                   fit: BoxFit.contain,
@@ -69,7 +69,7 @@ class UserPage extends StatelessWidget {
             ),
             Positioned(
               bottom: 0,
-              right: -100,
+              right: -50,
               child: SizedBox(
                 height: 136,
                 width: size.width,
@@ -80,13 +80,6 @@ class UserPage extends StatelessWidget {
                       child: Text(
                         userCart.title,
                         style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Text(
-                        'Spare Part',
-                        style: Theme.of(context).textTheme.caption,
                       ),
                     ),
                     Padding(

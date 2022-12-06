@@ -1,7 +1,6 @@
 import 'package:Car_service/constants.dart';
 import 'package:Car_service/model/user.dart';
 import 'package:Car_service/services/helper.dart';
-import 'package:Car_service/ui/home/home_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_storage/firebase_storage.dart';

@@ -268,34 +268,33 @@ class _SignUpState extends State<SignUpScreen> {
                                   errorColor: Theme.of(context).errorColor),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 16.0, right: 15, left: 15),
-                            child: const Text(
+                          const Padding(
+                            padding:
+                                EdgeInsets.only(top: 16.0, right: 15, left: 15),
+                            child: Text(
                               "Enter your Role Type :",
-                              style:
-                                  TextStyle(fontSize: 15, color: Colors.cyan),
+                              style: TextStyle(fontSize: 15, color: gold),
                               textAlign: TextAlign.left,
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(
-                                top: 16.0, right: 15, left: 15),
+                                top: 10, right: 8.0, left: 8.0),
                             child: ClipRRect(
-                              // borderRadius: BorderRadius.circular(30),
+                              borderRadius: BorderRadius.circular(10),
                               child: DropdownButtonFormField(
-                                // borderRadius: BorderRadius.circular(40),
-                                decoration: const InputDecoration(
+                                borderRadius: BorderRadius.circular(25.0),
+                                decoration: InputDecoration(
                                   enabledBorder: OutlineInputBorder(
-                                    // borderRadius: BorderRadius.circular(40),
+                                    borderRadius: BorderRadius.circular(25.0),
                                     borderSide: BorderSide(
-                                        color: Colors.deepPurpleAccent,
+                                        color: primecolor,
                                         width: 2), //<-- SEE HERE
                                   ),
                                   focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(25.0),
                                     borderSide: BorderSide(
-                                        color: Colors.deepPurpleAccent,
-                                        width: 2), //<-- SEE HERE
+                                        color: gold, width: 1), //<-- SEE HERE
                                   ),
                                   filled: true,
                                   fillColor: Colors.white,
@@ -334,13 +333,13 @@ class _SignUpState extends State<SignUpScreen> {
                                 style: ElevatedButton.styleFrom(
                                   fixedSize: Size.fromWidth(
                                       MediaQuery.of(context).size.width / 1.5),
-                                  backgroundColor: Colors.cyan,
+                                  backgroundColor: black,
                                   padding: const EdgeInsets.only(
                                       top: 16, bottom: 16),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(25.0),
                                     side: const BorderSide(
-                                      color: Colors.cyan,
+                                      color: black,
                                     ),
                                   ),
                                 ),
@@ -369,13 +368,13 @@ class _SignUpState extends State<SignUpScreen> {
                               style: ElevatedButton.styleFrom(
                                 fixedSize: Size.fromWidth(
                                     MediaQuery.of(context).size.width / 1.5),
-                                backgroundColor: Colors.cyan,
+                                backgroundColor: primecolor,
                                 padding:
                                     const EdgeInsets.only(top: 16, bottom: 16),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(25.0),
                                   side: const BorderSide(
-                                    color: Colors.cyan,
+                                    color: primecolor,
                                   ),
                                 ),
                               ),
