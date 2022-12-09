@@ -1,7 +1,7 @@
-import 'package:Car_service/AdminPage/AdminPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../AdminPage/AdminPage.dart';
 import '../constants.dart';
 import '../ui/home/MechanicHome/MechanicHome.dart';
 import '../ui/home/WinchHome/WinchHome.dart';

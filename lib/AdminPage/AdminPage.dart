@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:Car_service/AdminPage/screens/main/main_screen.dart';
 import 'package:Car_service/constants.dart';
 import 'package:Car_service/services/helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -40,23 +41,6 @@ class _AdminRoleState extends State<AdminRole> {
                     style: TextStyle(color: Color(0xffd3a625)),
                   ),
                 ),
-                ListTile(
-                  title: Text(
-                    'Rate Us',
-                    style: TextStyle(
-                        color: isDarkMode(context)
-                            ? Colors.grey.shade50
-                            : Colors.grey.shade900),
-                  ),
-                  leading: Transform.rotate(
-                    angle: pi / 150,
-                    child: Icon(
-                      Icons.star_rate,
-                      color: Color(0xffd3a625),
-                    ),
-                  ),
-                  onTap: () {},
-                ),
                 SizedBox(
                   height: 20,
                 ),
@@ -82,25 +66,29 @@ class _AdminRoleState extends State<AdminRole> {
               ],
             ),
           ),
-          body: StreamBuilder<List<User>>(
-              stream: readUsers(),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return Text("Something has erorr");
-                } else if (snapshot.hasData) {
-                  final users = snapshot.data!;
-                  return ListView(
-                    children: users.map(buildUser).toList(),
-                  );
-                } else {
-                  return CircularProgressIndicator();
-                }
-              }),
+          // body: StreamBuilder<List<User>>(
+          //     stream: readUsers(),
+          //     builder: (context, snapshot) {
+          //       if (snapshot.hasError) {
+          //         return Text("Something has erorr");
+          //       } else if (snapshot.hasData) {
+          //         final users = snapshot.data!;
+          //         return ListView(
+          //           children: users.map(buildUser).toList(),
+          //         );
+          //       } else {
+          //         return CircularProgressIndicator();
+          //       }
+          //     }),
+          body: MainScreen(),
           appBar: AppBar(
-            title: const Text("Admin Page"),
+            backgroundColor: Color(0xff222f5b),
+            title: const Text(
+              "Admin Page",
+              style: TextStyle(color: Color(0xff946b2d)),
+            ),
             centerTitle: true,
           ),
-          backgroundColor: const Color(0xfffffcfc),
         ));
   }
 
@@ -122,11 +110,3 @@ class _AdminRoleState extends State<AdminRole> {
       .map((snapshot) =>
           snapshot.docs.map((doc) => User.fromJson(doc.data())).toList());
 }
-// ListTil e(
-// leading: CircleAvatar(
-// child: Text('${user.roletype}'),
-// radius: 40,
-// ),
-// title: Text(user.fullName()),
-// subtitle: Text(user.email),
-// )
