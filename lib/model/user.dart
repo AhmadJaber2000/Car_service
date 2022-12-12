@@ -17,7 +17,11 @@ class User {
   String roletype;
 
   double lat;
+
   double long;
+
+  double rate;
+  String phoneNumber;
 
   User(
       {this.email = '',
@@ -27,6 +31,8 @@ class User {
       this.lat = 0,
       this.long = 0,
       this.profilePictureURL = '',
+      this.rate = 0,
+      this.phoneNumber='',
       this.roletype = ''})
       : appIdentifier =
             'Flutter Login Screen ${kIsWeb ? 'Web' : Platform.operatingSystem}';
@@ -42,6 +48,8 @@ class User {
         profilePictureURL: parsedJson['profilePictureURL'] ?? '',
         roletype: parsedJson['roletype'] ?? '',
         lat: parsedJson['lat'] ?? 0,
+        rate: parsedJson['rate'] ?? 0,
+        phoneNumber: parsedJson['phoneNumber'] ?? 0,
         long: parsedJson['long'] ?? 0);
   }
 
@@ -55,7 +63,9 @@ class User {
       'appIdentifier': appIdentifier,
       'roletype': roletype,
       'lat': lat,
-      'long': long
+      'long': long,
+      'rate': rate,
+      'phoneNumber':phoneNumber
     };
   }
 }
