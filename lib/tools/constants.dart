@@ -5,6 +5,7 @@ const colorPrimary = 0xFF4549BC;
 const facebookButtonColor = 0xFF415893;
 const facebookAppID = '285315185217069';
 const usersCollection = 'User';
+const chatCollection = 'Messages';
 const eula = 'https://www.instamobile.io/eula-instachatty/';
 const primecolor = Color(0xffae0001);
 const Darkred = Color(0xff740001);

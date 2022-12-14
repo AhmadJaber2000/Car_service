@@ -32,7 +32,7 @@ class User {
       this.long = 0,
       this.profilePictureURL = '',
       this.rate = 0,
-      this.phoneNumber='',
+      this.phoneNumber = '',
       this.roletype = ''})
       : appIdentifier =
             'Flutter Login Screen ${kIsWeb ? 'Web' : Platform.operatingSystem}';
@@ -65,7 +65,40 @@ class User {
       'lat': lat,
       'long': long,
       'rate': rate,
-      'phoneNumber':phoneNumber
+      'phoneNumber': phoneNumber
+    };
+  }
+}
+
+class Messages {
+  String messages;
+  String sent_by;
+  String last_message;
+
+  DateTime datetime;
+
+  Messages({
+    this.messages = '',
+    this.sent_by = '',
+    this.last_message = '',
+    required this.datetime,
+  });
+
+  factory Messages.fromJson(Map<String, dynamic> parsedJson) {
+    return Messages(
+      messages: parsedJson['messages'] ?? '',
+      sent_by: parsedJson['sent_by'] ?? '',
+      last_message: parsedJson['last_message'] ?? '',
+      datetime: DateTime.now(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'messages': messages,
+      'sent_by': sent_by,
+      'last_message': last_message,
+      'datetime': DateTime.now(),
     };
   }
 }

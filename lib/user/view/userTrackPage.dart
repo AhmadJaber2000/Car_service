@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class UserTrackPage extends StatefulWidget {
   const UserTrackPage({Key? key}) : super(key: key);
 
