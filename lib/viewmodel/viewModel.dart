@@ -4,10 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import '../AdminPage/AdminPage.dart';
-import '../model/roleType.dart';
 import '../tools/constants.dart';
-
 class ViewModel {
   static void route(BuildContext context) {
     User? user = FirebaseAuth.instance.currentUser;
@@ -17,16 +14,17 @@ class ViewModel {
         .get()
         .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Home(type: documentSnapshot.get('roletype')),
-          ),
-        );
-        if (documentSnapshot.get('roletype') == RoleType.admin) {
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => AdminRole()));
-        }
+            context,
+            MaterialPageRoute(
+              builder: (context) =>  Home(type: documentSnapshot.get('roletype')),
+            ),
+          );
+
+    // if (documentSnapshot.get('roletype') == RoleType.admin) {
+    //       Navigator.pushReplacement(
+    //           context, MaterialPageRoute(builder: (context) => AdminRole()));
+    //     }
       } else {
         print('Document does not exist on the database');
       }
@@ -34,6 +32,7 @@ class ViewModel {
   }
 
   //____________________________________________________________
+
 
   static String? validateName(String? value) {
     String pattern = r'(^[a-zA-Z ]*$)';
@@ -76,8 +75,7 @@ class ViewModel {
     }
   }
 
-  static String? validateConfirmPassword(
-      String? password, String? confirmPassword) {
+  static String? validateConfirmPassword(String? password, String? confirmPassword) {
     if (password != confirmPassword) {
       return 'Password doesn\'t match';
     } else if (confirmPassword?.isEmpty ?? true) {
@@ -99,16 +97,15 @@ class ViewModel {
   }
 
 //helper method to show progress
-  static late ProgressDialog progressDialog;
+  static late  ProgressDialog progressDialog;
 
-  static showProgress(
-      BuildContext context, String message, bool isDismissible) async {
+  static showProgress(BuildContext context, String message, bool isDismissible) async {
     progressDialog = ProgressDialog(context,
         type: ProgressDialogType.Normal, isDismissible: isDismissible);
     progressDialog.style(
         message: message,
         borderRadius: 10.0,
-        backgroundColor: Color(colorPrimary),
+        backgroundColor:  Color(colorPrimary),
         progressWidget: Container(
           padding: const EdgeInsets.all(8.0),
           child: const CircularProgressIndicator(
@@ -167,13 +164,10 @@ class ViewModel {
         .push(MaterialPageRoute(builder: (context) => destination));
   }
 
-  static pushAndRemoveUntil(
-      BuildContext context, Widget destination, bool predict) {
+  static pushAndRemoveUntil(BuildContext context, Widget destination, bool predict) {
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-          builder: (context) => destination,
-        ),
-        (Route<dynamic> route) => predict);
+        MaterialPageRoute(builder: (context) => destination,),
+            (Route<dynamic> route) => predict);
   }
 
   Widget displayCircleImage(String picUrl, double size, hasBorder) =>
@@ -187,43 +181,43 @@ class ViewModel {
               _getPlaceholderOrErrorImage(size, hasBorder));
 
   Widget _getPlaceholderOrErrorImage(double size, hasBorder) => Container(
-        width: size,
-        height: size,
-        decoration: BoxDecoration(
-          color: const Color(0xff7c94b6),
-          borderRadius: BorderRadius.all(Radius.circular(size / 2)),
-          border: Border.all(
-            color: Colors.white,
-            width: hasBorder ? 2.0 : 0.0,
-          ),
-        ),
-        child: ClipOval(
-            child: Image.asset(
+    width: size,
+    height: size,
+    decoration: BoxDecoration(
+      color: const Color(0xff7c94b6),
+      borderRadius: BorderRadius.all(Radius.circular(size / 2)),
+      border: Border.all(
+        color: Colors.white,
+        width: hasBorder ? 2.0 : 0.0,
+      ),
+    ),
+    child: ClipOval(
+        child: Image.asset(
           'assets/images/placeholder.jpg',
           fit: BoxFit.cover,
           height: size,
           width: size,
         )),
-      );
+  );
 
   Widget _getCircularImageProvider(
       ImageProvider provider, double size, bool hasBorder) {
     return ClipOval(
         child: Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(size / 2)),
-          border: Border.all(
-            color: Colors.white,
-            style: hasBorder ? BorderStyle.solid : BorderStyle.none,
-            width: 1.0,
-          ),
-          image: DecorationImage(
-            image: provider,
-            fit: BoxFit.cover,
-          )),
-    ));
+          width: size,
+          height: size,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(size / 2)),
+              border: Border.all(
+                color: Colors.white,
+                style: hasBorder ? BorderStyle.solid : BorderStyle.none,
+                width: 1.0,
+              ),
+              image: DecorationImage(
+                image: provider,
+                fit: BoxFit.cover,
+              )),
+        ));
   }
 
   static bool isDarkMode(BuildContext context) {
@@ -235,9 +229,7 @@ class ViewModel {
   }
 
   static InputDecoration getInputDecoration(
-      {required String hint,
-      required bool darkMode,
-      required Color errorColor}) {
+      {required String hint, required bool darkMode, required Color errorColor}) {
     return InputDecoration(
       constraints: const BoxConstraints(maxWidth: 720, minWidth: 200),
       contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -270,4 +262,5 @@ class ViewModel {
         ),
       );
   }
+
 }

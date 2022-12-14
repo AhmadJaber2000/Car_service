@@ -13,8 +13,9 @@ import '../service/location_service.dart';
 
 class GoogleMapView extends StatefulWidget {
   final String roleType;
+  final String service;
 
-  GoogleMapView(this.roleType);
+  GoogleMapView(this.roleType, this.service);
 
   @override
   _GoogleMapViewState createState() => _GoogleMapViewState();
@@ -44,7 +45,9 @@ class _GoogleMapViewState extends State<GoogleMapView> {
     getCustomMarker();
     await _getMyLocation();
     await setMarkerCurrentLocation();
-    users = await FireStoreUtils.getMarchants(widget.roleType);
+    users = widget.service.contains("location")?
+    await FireStoreUtils.getMarchantsLocation(widget.roleType):
+    await FireStoreUtils.getMarchantsRate(widget.roleType);
     await setMarkers();
   }
 
@@ -137,8 +140,8 @@ class _GoogleMapViewState extends State<GoogleMapView> {
       myMarkers.add(Marker(
         markerId: MarkerId("${++count}"),
         position: LatLng(myLocation.latitude!, myLocation.longitude!),
-        infoWindow: InfoWindow(
-          title: "loc",
+        infoWindow: const InfoWindow(
+          title: "my location",
         ),
         // icon: customDescriptor,
       ));
