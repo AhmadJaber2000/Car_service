@@ -2,6 +2,7 @@ import 'package:Car_service/LiveChat/ChatHome.dart';
 import 'package:Car_service/model/roleType.dart';
 import 'package:Car_service/user/view/userMechanicPage.dart';
 import 'package:flutter/material.dart';
+import '../../ChatIn/screens/home_screen.dart';
 import '../../user/view/userNormalPage.dart';
 import '../../user/view/drawer.dart';
 import '../../user/view/userTrackPage.dart';
@@ -31,6 +32,6 @@ class Home extends StatelessWidget {
                 ? const UserMechanicPage()
                 : type == RoleType.track
                     ? const UserTrackPage()
-                    : UserTrackPage());
+                    : HomeScreen());
   }
 }

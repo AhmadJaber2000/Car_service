@@ -38,6 +38,7 @@ dependencies:
   tracking: ^0.0.1
   google_fonts: ^2.0.0
   fl_chart: ^0.35.0
+  google_sign_in: ^5.4.2
 
 
 

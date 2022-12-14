@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-
 import '../authenticate/service/authentication_bloc.dart';
 import '../firebase/firebase_options.dart';
 import '../launcherScreen/launcher_screen.dart';
