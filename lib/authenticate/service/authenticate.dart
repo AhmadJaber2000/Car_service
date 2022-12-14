@@ -83,23 +83,53 @@ class FireStoreUtils {
     }
   }
 
-  static Future<List<User>> getMarchants(String type) async {
+  static Future<List<User>> getMarchantsLocation(String type) async {
     List<User> users = [];
+    print("type $type");
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection(usersCollection)
         .where('roletype', isEqualTo: type)
         .get();
-    print("LENGTH ${querySnapshot.docs.length}");
+    print("LENGTH getMarchantsLocation ${querySnapshot.docs.length}");
     for (int i = 0; i < querySnapshot.docs.length; i++) {
       var a = querySnapshot.docs[i];
-      print(a.data());
+      print("rate ${a.get("rate")}");
       users.add(await User(
         firstName: a.get("firstName"),
         lastName: a.get("lastName"),
+        email: a.get("email"),
         lat: a.get("lat"),
         long: a.get("long"),
         roletype: a.get("roletype"),
+        rate: a.get("rate")
       ));
+    }
+    return users;
+  }
+
+  static Future<List<User>> getMarchantsRate(String type) async {
+    List<User> users = [];
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection(usersCollection)
+        // .where('roletype', isEqualTo: type)
+        .where('rate', isGreaterThanOrEqualTo: 3)
+        .get();
+    print("LENGTH getMarchantsRate ${querySnapshot.docs.length}");
+    for (int i = 0; i < querySnapshot.docs.length; i++) {
+      var a = querySnapshot.docs[i];
+      print("rate ${a.get("rate")}");
+      print("roletype ${a.get("roletype")}");
+      if(a.get("roletype")=="Track"){
+        users.add(await User(
+            firstName: a.get("firstName"),
+            lastName: a.get("lastName"),
+            lat: a.get("lat"),
+            long: a.get("long"),
+            roletype: a.get("roletype"),
+            rate: a.get("rate")
+        ));
+      }
+
     }
     return users;
   }

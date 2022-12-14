@@ -186,18 +186,9 @@ class ViewModel {
     decoration: BoxDecoration(
       color: const Color(0xff7c94b6),
       borderRadius: BorderRadius.all(Radius.circular(size / 2)),
-      border: Border.all(
-        color: Colors.white,
-        width: hasBorder ? 2.0 : 0.0,
-      ),
+      border: Border.all(color: Colors.white, width: hasBorder ? 2.0 : 0.0,),
     ),
-    child: ClipOval(
-        child: Image.asset(
-          'assets/images/placeholder.jpg',
-          fit: BoxFit.cover,
-          height: size,
-          width: size,
-        )),
+    child: ClipOval(child: Image.asset('assets/images/placeholder.jpg', fit: BoxFit.cover, height: size, width: size)),
   );
 
   Widget _getCircularImageProvider(

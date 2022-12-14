@@ -4,8 +4,9 @@ import 'googleMapView.dart';
 
 class RoleTypeGoogleMapPage extends StatefulWidget {
   final String userType;
+  final String service;
   final String roleType;
-  const RoleTypeGoogleMapPage({Key? key, required this.userType, required this.roleType}) : super(key: key);
+  const RoleTypeGoogleMapPage({Key? key, required this.userType, required this.roleType, required this.service}) : super(key: key);
 
   @override
   State<RoleTypeGoogleMapPage> createState() => _RoleTypeGoogleMapPageState();
@@ -17,7 +18,7 @@ class _RoleTypeGoogleMapPageState extends State<RoleTypeGoogleMapPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: HomeAppBar(),
-      body: GoogleMapView(widget.roleType),
+      body: GoogleMapView(widget.roleType,widget.service),
     );
   }
 
