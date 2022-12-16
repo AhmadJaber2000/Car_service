@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import '../../googlemap/view/roleTypeGoogleMapPage.dart';
 import '../../model/roleType.dart';
 
-class UserMechanicPage extends StatefulWidget {
-  const UserMechanicPage({Key? key}) : super(key: key);
+class UserTruckPage extends StatefulWidget {
+  const UserTruckPage({Key? key}) : super(key: key);
 
   @override
-  State<UserMechanicPage> createState() => _UserMechanicPageState();
+  State<UserTruckPage> createState() => _UserTruckPageState();
 }
 
-class _UserMechanicPageState extends State<UserMechanicPage> {
+class _UserTruckPageState extends State<UserTruckPage> {
   @override
   Widget build(BuildContext context) {
     return Container(

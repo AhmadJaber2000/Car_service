@@ -1,21 +1,26 @@
+import 'package:Car_service/authenticate/service/authenticate.dart';
+import 'package:Car_service/model/user.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import '../../startpoint/main.dart';
+import '../../tools/constants.dart';
 import '../api/apis.dart';
 import '../models/chat_user.dart';
 import '../widgets/chat_user_card.dart';
 import 'profile_screen.dart';
 
 //home screen -- where all available contacts are shown
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class ChatScreen extends StatefulWidget {
+  const ChatScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<ChatScreen> createState() => _ChatScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _ChatScreenState extends State<ChatScreen> {
   // for storing all users
   List<ChatUser> _list = [];
 
@@ -28,8 +33,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     APIs.getSelfInfo();
+    function();
   }
 
+  function() async {}
   @override
   Widget build(BuildContext context) {
     Size mq = MediaQuery.of(context).size;
@@ -50,65 +57,65 @@ class _HomeScreenState extends State<HomeScreen> {
           }
         },
         child: Scaffold(
-          appBar: AppBar(
-            leading: const Icon(CupertinoIcons.home),
-            title: _isSearching
-                ? TextField(
-                    decoration: const InputDecoration(
-                        border: InputBorder.none, hintText: 'Name, Email, ...'),
-                    autofocus: true,
-                    style: const TextStyle(fontSize: 17, letterSpacing: 0.5),
-                    //when search text changes then updated search list
-                    onChanged: (val) {
-                      //search logic
-                      _searchList.clear();
-
-                      for (var i in _list) {
-                        if (i.name.toLowerCase().contains(val.toLowerCase()) ||
-                            i.email.toLowerCase().contains(val.toLowerCase())) {
-                          _searchList.add(i);
-                          setState(() {
-                            _searchList;
-                          });
-                        }
-                      }
-                    },
-                  )
-                : const Text('We Chat'),
-            actions: [
-              //search user button
-              IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _isSearching = !_isSearching;
-                    });
-                  },
-                  icon: Icon(_isSearching
-                      ? CupertinoIcons.clear_circled_solid
-                      : Icons.search)),
-
-              //more features button
-              // IconButton(
-              //     onPressed: () {
-              //       Navigator.push(
-              //           context,
-              //           MaterialPageRoute(
-              //               builder: (_) => ProfileScreen(user: APIs.me)));
-              //     },
-              //     icon: const Icon(Icons.more_vert))
-            ],
-          ),
+          // appBar: AppBar(
+          //   leading: const Icon(CupertinoIcons.home),
+          //   title: _isSearching
+          //       ? TextField(
+          //           decoration: const InputDecoration(
+          //               border: InputBorder.none, hintText: 'Name, Email, ...'),
+          //           autofocus: true,
+          //           style: const TextStyle(fontSize: 17, letterSpacing: 0.5),
+          //           //when search text changes then updated search list
+          //           onChanged: (val) {
+          //             //search logic
+          //             _searchList.clear();
+          //
+          //             for (var i in _list) {
+          //               if (i.name.toLowerCase().contains(val.toLowerCase()) ||
+          //                   i.email.toLowerCase().contains(val.toLowerCase())) {
+          //                 _searchList.add(i);
+          //                 setState(() {
+          //                   _searchList;
+          //                 });
+          //               }
+          //             }
+          //           },
+          //         )
+          //       : const Text('We Chat'),
+          //   actions: [
+          //     //search user button
+          //     IconButton(
+          //         onPressed: () {
+          //           setState(() {
+          //             _isSearching = !_isSearching;
+          //           });
+          //         },
+          //         icon: Icon(_isSearching
+          //             ? CupertinoIcons.clear_circled_solid
+          //             : Icons.search)),
+          //
+          //     //more features button
+          //     // IconButton(
+          //     //     onPressed: () {
+          //     //       Navigator.push(
+          //     //           context,
+          //     //           MaterialPageRoute(
+          //     //               builder: (_) => ProfileScreen(user: APIs.me)));
+          //     //     },
+          //     //     icon: const Icon(Icons.more_vert))
+          //   ],
+          // ),
 
           //floating button to add new user
-          floatingActionButton: Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: FloatingActionButton(
-                onPressed: () async {
-                  await APIs.auth.signOut();
-                  await GoogleSignIn().signOut();
-                },
-                child: const Icon(Icons.add_comment_rounded)),
-          ),
+          // floatingActionButton: Padding(
+          //   padding: const EdgeInsets.only(bottom: 10),
+          //   child: FloatingActionButton(
+          //       onPressed: () async {
+          //         await APIs.auth.signOut();
+          //         await GoogleSignIn().signOut();
+          //       },
+          //       child: const Icon(Icons.add_comment_rounded)),
+          // ),
 
           //body
           body: StreamBuilder(
@@ -136,9 +143,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         physics: const BouncingScrollPhysics(),
                         itemBuilder: (context, index) {
                           return ChatUserCard(
-                              user: _isSearching
-                                  ? _searchList[index]
-                                  : _list[index]);
+                            user: _isSearching
+                                ? _searchList[index]
+                                : _list[index],
+                          );
                           // return Text('Name: ${list[index]}');
                         });
                   } else {

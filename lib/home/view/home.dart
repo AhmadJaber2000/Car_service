@@ -1,11 +1,10 @@
-import 'package:Car_service/LiveChat/ChatHome.dart';
 import 'package:Car_service/model/roleType.dart';
 import 'package:Car_service/user/view/userMechanicPage.dart';
+import 'package:Car_service/user/view/userTruckPage.dart';
 import 'package:flutter/material.dart';
 import '../../ChatIn/screens/home_screen.dart';
 import '../../user/view/userNormalPage.dart';
 import '../../user/view/drawer.dart';
-import '../../user/view/userTrackPage.dart';
 
 class Home extends StatelessWidget {
   final String type;
@@ -26,12 +25,12 @@ class Home extends StatelessWidget {
           ),
           centerTitle: true,
         ),
-        body: type == RoleType.user
+        body: type == RoleType.customer
             ? const UserNormalPage()
             : type == RoleType.mechanic
                 ? const UserMechanicPage()
-                : type == RoleType.track
-                    ? const UserTrackPage()
-                    : HomeScreen());
+                : type == RoleType.truck
+                    ? const UserTruckPage()
+                    : ChatScreen());
   }
 }

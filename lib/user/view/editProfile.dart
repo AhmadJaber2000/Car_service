@@ -2,8 +2,10 @@ import 'package:Car_service/model/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart' as u;
+import 'package:location/location.dart';
 
 import '../../authenticate/service/authenticate.dart';
+import '../../googlemap/service/location_service.dart';
 import '../../tools/constants.dart';
 import '../../viewmodel/viewmodel.dart';
 
@@ -22,6 +24,8 @@ class _EditProfileState extends State<EditProfile> {
   bool enabled = false; //Not clickable and not editable
   bool readOnly = true;
   String title = 'Edit';
+  late LocationData location;
+  double? lat, long;
   @override
   void initState() {
     // TODO: implement initState
@@ -113,7 +117,7 @@ class _EditProfileState extends State<EditProfile> {
                 padding:
                     const EdgeInsets.only(top: 16.0, right: 8.0, left: 8.0),
                 child: TextFormField(
-                  enabled: enabled, //Not clickable and not editable
+                  enabled: false, //Not clickable and not editable
                   readOnly: readOnly,
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next,
@@ -177,6 +181,41 @@ class _EditProfileState extends State<EditProfile> {
                       });
                     }),
               ),
+              Padding(
+                padding:
+                    const EdgeInsets.only(right: 40.0, left: 40.0, top: 40.0),
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      fixedSize: Size.fromWidth(
+                          MediaQuery.of(context).size.width / 1.5),
+                      backgroundColor: black,
+                      padding: const EdgeInsets.only(top: 16, bottom: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                        side: const BorderSide(
+                          color: black,
+                        ),
+                      ),
+                    ),
+                    child: const Text(
+                      'Update Your Location',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    onPressed: () async {
+                      location = await LocationService().getLocation();
+                      setState(() {
+                        // lat = location.latitude;
+                        // long = location.longitude;
+                        print(lat);
+                        print(long);
+                        updateUser();
+                      });
+                    }),
+              ),
             ],
           ),
         ),
@@ -199,8 +238,10 @@ class _EditProfileState extends State<EditProfile> {
     setState(() {
       user.firstName = firstnameController.text!;
       user.lastName = lastnameController.text!;
-      user.email = emailController.text!;
+      // user.email = emailController.text!;
       user.phoneNumber = phoneController.text!;
+      user.lat = location.latitude!;
+      user.long = location.longitude!;
     });
     print(user.firstName);
     await FireStoreUtils.updateCurrentUser(user);

@@ -32,7 +32,7 @@ class _SignUpState extends State<SignUpScreen> {
   double? lat, long;
   AutovalidateMode _validate = AutovalidateMode.disabled;
   bool acceptEULA = false;
-  String userType = 'User';
+  String userType = 'Customer';
   late LocationData location;
 
   @override
@@ -329,8 +329,8 @@ class _SignUpState extends State<SignUpScreen> {
                                   });
                                 },
                                 items: <String>[
-                                  'User',
-                                  'Track',
+                                  'Customer',
+                                  'Truck',
                                   'Mechanic',
                                 ].map<DropdownMenuItem<String>>((String value) {
                                   return DropdownMenuItem<String>(

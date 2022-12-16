@@ -12,6 +12,7 @@ dependencies:
   firebase_storage: ^11.0.6
   cloud_functions: ^4.0.5
   intl:
+  lottie: ^1.1.0
 
   shared_preferences: ^2.0.15
   progress_dialog:
@@ -39,6 +40,7 @@ dependencies:
   google_fonts: ^2.0.0
   fl_chart: ^0.35.0
   google_sign_in: ^5.4.2
+
 
 
 

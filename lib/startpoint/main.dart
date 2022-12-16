@@ -31,7 +31,6 @@ void main() async {
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
-
   @override
   MyAppState createState() => MyAppState();
 }
@@ -60,6 +59,7 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+
   @override
   Widget build(BuildContext context) {
     // Show error message if initialization failed
