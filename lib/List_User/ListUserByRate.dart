@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:rate_my_app/rate_my_app.dart';
+import '../googlemap/view/roleTypeGoogleMapPage.dart';
 import '../model/user.dart';
 import '../tools/constants.dart';
 
@@ -13,6 +15,10 @@ class ListMechanicByRate extends StatefulWidget {
 
 class _ListMechanicByRateState extends State<ListMechanicByRate> {
   List<User> user = [];
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,20 +111,20 @@ class _ListMechanicByRateState extends State<ListMechanicByRate> {
               Expanded(
                 child: GestureDetector(
                     onTap: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => RoleTypeGoogleMapPage(
-                      //           userType: title,
-                      //           service: "location",
-                      //           roleType: type,
-                      //         )));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => RoleTypeGoogleMapPage(
+                                    userType: user.roletype,
+                                    service: "location",
+                                    roleType: user.roletype,
+                                  )));
                     },
                     child: buildChoice(
                         "location",
                         const Icon(
                           Icons.location_on_sharp,
-                          color: Colors.blue,
+                          color: Colors.red,
                         ))),
               ),
               Expanded(
@@ -133,25 +139,57 @@ class _ListMechanicByRateState extends State<ListMechanicByRate> {
                           "Chat",
                           const Icon(
                             Icons.chat,
-                            color: Colors.amber,
+                            color: Color(0xff326ada),
                           )))),
               Expanded(
                 child: GestureDetector(
                     onTap: () {
+                      RateMyApp _rateMyApp = RateMyApp(
+                        preferencesPrefix: 'Rate This User',
+                        minDays: 3,
+                        minLaunches: 7,
+                        remindDays: 2,
+                        remindLaunches: 5,
+                        // appStoreIdentifier: '',
+                        // googlePlayIdentifier: '',
+                      );
+                      _rateMyApp.init().then((_) {
+                        // if (_rateMyApp.shouldOpenDialog) {
+                        _rateMyApp.showStarRateDialog(
+                          context,
+                          title: 'Enjoying Flutter Rating Prompt?',
+                          message: 'Please leave a rating!',
+                          actionsBuilder: (context, stars) {
+                            return [
+                              ElevatedButton(
+                                child: Text('Ok'),
+                                onPressed: () {},
+                              ),
+                            ];
+                          },
+                          dialogStyle: DialogStyle(
+                            titleAlign: TextAlign.center,
+                            messageAlign: TextAlign.center,
+                            messagePadding: EdgeInsets.only(bottom: 20.0),
+                          ),
+                          starRatingOptions: StarRatingOptions(),
+                        );
+                        // }
+                      });
                       // Navigator.push(
                       //     context,
                       //     MaterialPageRoute(
                       //         builder: (context) => RoleTypeGoogleMapPage(
-                      //           userType: title,
-                      //           service: "location",
-                      //           roleType: type,
-                      //         )));
+                      //               userType: user.roletype,
+                      //               service: "location",
+                      //               roleType: user.roletype,
+                      //             )));
                     },
                     child: buildChoice(
                         "Rate",
                         const Icon(
                           Icons.star_rate,
-                          color: Colors.blue,
+                          color: Colors.amber,
                         ))),
               ),
             ],
@@ -191,6 +229,13 @@ class _ListMechanicByRateState extends State<ListMechanicByRate> {
       ),
     );
   }
+
+  // Future<User?> updateUser() async {
+  //   print("update");
+  //   setState(() {});
+  //   print(user.firstName);
+  //   await FireStoreUtils.updateCurrentUser(user);
+  // }
 
   Stream<List<User>> readUsers() => FirebaseFirestore.instance
       .collection(usersCollection)

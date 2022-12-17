@@ -1,3 +1,4 @@
+import 'package:Car_service/ChatIn/api/apis.dart';
 import 'package:Car_service/List_User/ListUserByRate.dart';
 import 'package:flutter/material.dart';
 import '../../googlemap/service/location_service.dart';
@@ -112,6 +113,7 @@ class _UserNormalPageState extends State<UserNormalPage> {
                 Expanded(
                     child: GestureDetector(
                         onTap: () {
+                          // if (RoleType.mechanic == User())
                           Navigator.push(
                               context,
                               MaterialPageRoute(

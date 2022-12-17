@@ -93,14 +93,15 @@ class FireStoreUtils {
       var a = querySnapshot.docs[i];
       print("rate ${a.get("rate")}");
       users.add(await User(
-        firstName: a.get("firstName"),
-        lastName: a.get("lastName"),
-        email: a.get("email"),
-        lat: a.get("lat"),
-        long: a.get("long"),
-        roletype: a.get("roletype"),
-        rate: a.get("rate")
-      ));
+          firstName: a.get("firstName"),
+          lastName: a.get("lastName"),
+          email: a.get("email"),
+          lat: a.get("lat"),
+          long: a.get("long"),
+          roletype: a.get("roletype"),
+          rate: a.get("rate"),
+          phoneNumber: a.get('phoneNumber'),
+          userID: a.get('id')));
     }
     return users;
   }
@@ -117,17 +118,17 @@ class FireStoreUtils {
       var a = querySnapshot.docs[i];
       print("rate ${a.get("rate")}");
       print("roletype ${a.get("roletype")}");
-      if(a.get("roletype")=="Track"){
+      if (a.get("roletype") == "Track") {
         users.add(await User(
             firstName: a.get("firstName"),
             lastName: a.get("lastName"),
             lat: a.get("lat"),
             long: a.get("long"),
             roletype: a.get("roletype"),
-            rate: a.get("rate")
-        ));
+            rate: a.get("rate"),
+            phoneNumber: a.get("phoneNumber"),
+            userID: a.get('id')));
       }
-
     }
     return users;
   }

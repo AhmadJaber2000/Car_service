@@ -40,6 +40,17 @@ dependencies:
   google_fonts: ^2.0.0
   fl_chart: ^0.35.0
   google_sign_in: ^5.4.2
+  bottom_sheet: ^3.1.2
+  flutter_phone_direct_caller: ^2.1.1
+  provider: ^6.0.2
+  flutter_easyloading: ^3.0.3
+  firebase_app_check: ^0.1.1+6
+  data_table_2: ^2.0.3
+
+
+
+
+
 
 
 
@@ -58,9 +69,14 @@ flutter_icons:
   ios: true
   remove_alpha_ios: true
   image_path: android/app/src/main/ic_launcher-playstore.png
+  fonts:
+    - family: myfont
+      fonts:
+        - asset: assets/fonts/Montserrat-VariableFont_wght.ttf
 
 flutter:
   uses-material-design: true
   assets:
     - assets/images/
     - assets/images/admin.png
+    - assets/icons/
