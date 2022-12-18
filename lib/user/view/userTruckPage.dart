@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../List_User/ListUserByRate.dart';
 import '../../googlemap/view/roleTypeGoogleMapPage.dart';
 import '../../model/roleType.dart';
 
@@ -112,11 +113,15 @@ class _UserTruckPageState extends State<UserTruckPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => RoleTypeGoogleMapPage(
-                                        userType: title,
-                                        service: "rate",
-                                        roleType: type,
-                                      )));
+                                  builder: (context) => ListMechanicByRate()));
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => RoleTypeGoogleMapPage(
+                          //               userType: title,
+                          //               service: "rate",
+                          //               roleType: type,
+                          //             )));
                         },
                         child: buildChoice(
                             "Rate",

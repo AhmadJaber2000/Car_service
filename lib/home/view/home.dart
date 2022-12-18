@@ -31,6 +31,6 @@ class Home extends StatelessWidget {
                 ? const UserMechanicPage()
                 : type == RoleType.truck
                     ? const UserTruckPage()
-                    : ChatScreen());
+                    : HomeChatScreen());
   }
 }

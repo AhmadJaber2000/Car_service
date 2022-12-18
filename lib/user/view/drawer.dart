@@ -1,8 +1,10 @@
 import 'dart:math';
+import 'package:Car_service/ChatIn/screens/chat_screen.dart';
 import 'package:Car_service/authenticate/view/login_screen.dart';
 import 'package:Car_service/user/view/editProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../ChatIn/screens/home_screen.dart';
 import '../../authenticate/service/authentication_bloc.dart';
 import '../../viewmodel/viewmodel.dart';
 import '../../welcome/welcome_screen.dart';
@@ -45,6 +47,26 @@ class DrawerView extends StatelessWidget {
               ),
               onTap: () {
                 ViewModel.push(context, const EditProfile());
+              },
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            ListTile(
+              title: const Text(
+                'Chat',
+                style: TextStyle(color: Colors.cyan),
+              ),
+              leading: Transform.rotate(
+                angle: pi / 150,
+                child: Icon(
+                  Icons.chat,
+                  color: Theme.of(context).primaryColorLight,
+                ),
+              ),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => HomeChatScreen()));
               },
             ),
             const SizedBox(

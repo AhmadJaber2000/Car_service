@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../List_User/ListUserByRate.dart';
+import '../../PartShops/screen/HomeScreen.dart';
 import '../../googlemap/view/roleTypeGoogleMapPage.dart';
 import '../../model/roleType.dart';
 
@@ -15,22 +17,28 @@ class _UserMechanicPageState extends State<UserMechanicPage> {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text("What are you looking for ?",
-              style: TextStyle(
-                  color: Colors.cyan,
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold)),
-          const SizedBox(
-            height: 30,
-          ),
-          buildContainer("Mechanics", RoleType.mechanic,
-              "assets/images/v-fococlipping-standard.png"),
-          buildContainer("Trucks", RoleType.truck,
-              "assets/images/mechanic-1464584-1239754-fococlipping-standard.png"),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 5,
+            ),
+            const Text("What are you looking for ?",
+                style: TextStyle(
+                    color: Colors.cyan,
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold)),
+            const SizedBox(
+              height: 30,
+            ),
+            buildContainer("Mechanics", RoleType.mechanic,
+                "assets/images/car-repair-illustration-concept-vector-fococlipping-standard.png"),
+            buildContainer("Trucks", RoleType.truck,
+                "assets/images/towing-fococlipping-standard.png"),
+            buildContainerShop()
+          ],
+        ),
       ),
     );
   }
@@ -71,11 +79,7 @@ class _UserMechanicPageState extends State<UserMechanicPage> {
                       fontWeight: FontWeight.bold)),
               const SizedBox(
                 height: 20,
-              ),
-              const Icon(
-                Icons.add_call,
-                color: Colors.cyan,
-                size: 20,
+                width: 20,
               ),
               Image.asset(
                 image,
@@ -112,16 +116,101 @@ class _UserMechanicPageState extends State<UserMechanicPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => RoleTypeGoogleMapPage(
-                                        userType: title,
-                                        service: "rate",
-                                        roleType: type,
-                                      )));
+                                  builder: (context) => ListMechanicByRate()));
                         },
                         child: buildChoice(
                             "Rate",
                             const Icon(
                               Icons.star,
+                              color: Colors.amber,
+                            )))),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  buildContainerShop() {
+    return Container(
+      height: MediaQuery.of(context).size.height / 4,
+      margin: const EdgeInsets.all(15),
+      width: double.infinity,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: Colors.white, width: 2),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 5,
+              blurRadius: 7,
+              offset: Offset(0, 3), // changes position of shadow
+            ),
+          ],
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [
+              Colors.white,
+              Colors.cyan,
+            ],
+          )),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Part Shops',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold)),
+              const SizedBox(
+                height: 20,
+                width: 20,
+              ),
+              Image.asset(
+                "assets/images/logo-for-auto-parts-store-vector-23900646-fococlipping-standard.png",
+                height: 100,
+              ),
+            ],
+          ),
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                      onTap: () {
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => RoleTypeGoogleMapPage(
+                        //               userType: title,
+                        //               service: "location",
+                        //               roleType: type,
+                        //             )));
+                      },
+                      child: buildChoice(
+                          "location",
+                          const Icon(
+                            Icons.location_on_sharp,
+                            color: Colors.blue,
+                          ))),
+                ),
+                Expanded(
+                    child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PartScreen()));
+                        },
+                        child: buildChoice(
+                            "Popular Shop",
+                            const Icon(
+                              Icons.car_repair,
                               color: Colors.amber,
                             )))),
               ],

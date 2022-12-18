@@ -9,6 +9,7 @@ import '../screens/chat_screen.dart';
 //card to represent a single user in home screen
 class ChatUserCard extends StatefulWidget {
   final ChatUser user;
+  // final User userd;
 
   const ChatUserCard({super.key, required this.user});
 
@@ -28,8 +29,12 @@ class _ChatUserCardState extends State<ChatUserCard> {
       child: InkWell(
         onTap: () {
           //for navigating to chat screen
-          Navigator.push(context,
-              MaterialPageRoute(builder: (_) => ChatScreen(user: widget.user)));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => ChatScreen(
+                        user: widget.user,
+                      )));
         },
         child: ListTile(
           //user profile picture

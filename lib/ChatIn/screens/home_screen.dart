@@ -2,6 +2,7 @@ import 'package:Car_service/authenticate/service/authenticate.dart';
 import 'package:Car_service/model/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,19 +14,20 @@ import '../widgets/chat_user_card.dart';
 import 'profile_screen.dart';
 
 //home screen -- where all available contacts are shown
-class ChatScreen extends StatefulWidget {
-  const ChatScreen({super.key});
+class HomeChatScreen extends StatefulWidget {
+  const HomeChatScreen({super.key});
 
   @override
-  State<ChatScreen> createState() => _ChatScreenState();
+  State<HomeChatScreen> createState() => _HomeChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class _HomeChatScreenState extends State<HomeChatScreen> {
   // for storing all users
   List<ChatUser> _list = [];
 
   // for storing searched items
   final List<ChatUser> _searchList = [];
+  List<User> _ListUser = [];
   // for storing search status
   bool _isSearching = false;
 
@@ -57,65 +59,14 @@ class _ChatScreenState extends State<ChatScreen> {
           }
         },
         child: Scaffold(
-          // appBar: AppBar(
-          //   leading: const Icon(CupertinoIcons.home),
-          //   title: _isSearching
-          //       ? TextField(
-          //           decoration: const InputDecoration(
-          //               border: InputBorder.none, hintText: 'Name, Email, ...'),
-          //           autofocus: true,
-          //           style: const TextStyle(fontSize: 17, letterSpacing: 0.5),
-          //           //when search text changes then updated search list
-          //           onChanged: (val) {
-          //             //search logic
-          //             _searchList.clear();
-          //
-          //             for (var i in _list) {
-          //               if (i.name.toLowerCase().contains(val.toLowerCase()) ||
-          //                   i.email.toLowerCase().contains(val.toLowerCase())) {
-          //                 _searchList.add(i);
-          //                 setState(() {
-          //                   _searchList;
-          //                 });
-          //               }
-          //             }
-          //           },
-          //         )
-          //       : const Text('We Chat'),
-          //   actions: [
-          //     //search user button
-          //     IconButton(
-          //         onPressed: () {
-          //           setState(() {
-          //             _isSearching = !_isSearching;
-          //           });
-          //         },
-          //         icon: Icon(_isSearching
-          //             ? CupertinoIcons.clear_circled_solid
-          //             : Icons.search)),
-          //
-          //     //more features button
-          //     // IconButton(
-          //     //     onPressed: () {
-          //     //       Navigator.push(
-          //     //           context,
-          //     //           MaterialPageRoute(
-          //     //               builder: (_) => ProfileScreen(user: APIs.me)));
-          //     //     },
-          //     //     icon: const Icon(Icons.more_vert))
-          //   ],
-          // ),
-
-          //floating button to add new user
-          // floatingActionButton: Padding(
-          //   padding: const EdgeInsets.only(bottom: 10),
-          //   child: FloatingActionButton(
-          //       onPressed: () async {
-          //         await APIs.auth.signOut();
-          //         await GoogleSignIn().signOut();
-          //       },
-          //       child: const Icon(Icons.add_comment_rounded)),
-          // ),
+          appBar: AppBar(
+            centerTitle: true,
+            title: Text(
+              'Chat',
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: primecolor,
+          ),
 
           //body
           body: StreamBuilder(
@@ -131,23 +82,29 @@ class _ChatScreenState extends State<ChatScreen> {
                 case ConnectionState.active:
                 case ConnectionState.done:
                   final data = snapshot.data?.docs;
+
                   _list =
                       data?.map((e) => ChatUser.fromJson(e.data())).toList() ??
                           [];
 
                   if (_list.isNotEmpty) {
-                    return ListView.builder(
-                        itemCount:
-                            _isSearching ? _searchList.length : _list.length,
-                        padding: EdgeInsets.only(top: mq.height * .01),
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return ChatUserCard(
-                            user: _isSearching
-                                ? _searchList[index]
-                                : _list[index],
-                          );
-                          // return Text('Name: ${list[index]}');
+                    return StreamBuilder(
+                        stream: readUsers(),
+                        builder: (context, snapshot) {
+                          // final users = snapshot.data;
+                          // final User userd =;
+                          return ListView.builder(
+                              itemCount: _isSearching
+                                  ? _searchList.length
+                                  : _list.length,
+                              padding: EdgeInsets.only(top: mq.height * .01),
+                              physics: const BouncingScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                return ChatUserCard(
+                                  user: _list[index],
+                                );
+                                // return Text('Name: ${list[index]}');
+                              });
                         });
                   } else {
                     return const Center(
@@ -162,4 +119,10 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
     );
   }
+
+  Stream<List<User>> readUsers() => FirebaseFirestore.instance
+      .collection(usersCollection)
+      .snapshots()
+      .map((snapshot) =>
+          snapshot.docs.map((doc) => User.fromJson(doc.data())).toList());
 }

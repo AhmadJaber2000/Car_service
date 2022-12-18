@@ -65,9 +65,8 @@ class _SignUpState extends State<SignUpScreen> {
                     await context.read<LoadingCubit>().showLoading(
                         context, 'Creating new account, Please wait...', false);
                     if (!mounted) return;
-                    context
-                        .read<AuthenticationBloc>()
-                        .add(SignupWithEmailAndPasswordEvent(
+                    context.read<AuthenticationBloc>().add(
+                        SignupWithEmailAndPasswordEvent(
                             emailAddress: email!,
                             password: password!,
                             imageData: _imageData,
@@ -76,7 +75,7 @@ class _SignUpState extends State<SignUpScreen> {
                             userType: userType,
                             lat: lat,
                             phonenumber: phonenumber,
-                            // rate: Random().nextInt(5) + 1,
+                            rate: 0,
                             long: long));
                   } else if (state is SignUpFailureState) {
                     ViewModel.showSnackBar(context, state.errorMessage);

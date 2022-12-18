@@ -43,7 +43,7 @@ class APIs {
 
   // for creating a new user
   static Future<void> createUser() async {
-    final time = DateTime.now().millisecondsSinceEpoch.toString();
+    final time = DateTime.now().toString();
 
     final chatUser = ChatUser(
         id: user.uid,

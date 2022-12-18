@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../../model/user.dart';
 import '../../startpoint/main.dart';
 import '../api/apis.dart';
 import '../models/chat_user.dart';
@@ -9,6 +10,7 @@ import '../widgets/message_card.dart';
 
 class ChatScreen extends StatefulWidget {
   final ChatUser user;
+  // final User userd;
 
   const ChatScreen({super.key, required this.user});
 

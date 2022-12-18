@@ -1,3 +1,4 @@
+import 'package:Car_service/ChatIn/screens/home_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ class ListMechanicByRate extends StatefulWidget {
 }
 
 class _ListMechanicByRateState extends State<ListMechanicByRate> {
-  List<User> user = [];
+  // List<User> user = [];
   @override
   void initState() {
     super.initState();
@@ -130,10 +131,10 @@ class _ListMechanicByRateState extends State<ListMechanicByRate> {
               Expanded(
                   child: GestureDetector(
                       onTap: () {
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => ListMechanicByRate()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomeChatScreen()));
                       },
                       child: buildChoice(
                           "Chat",
@@ -141,57 +142,57 @@ class _ListMechanicByRateState extends State<ListMechanicByRate> {
                             Icons.chat,
                             color: Color(0xff326ada),
                           )))),
-              Expanded(
-                child: GestureDetector(
-                    onTap: () {
-                      RateMyApp _rateMyApp = RateMyApp(
-                        preferencesPrefix: 'Rate This User',
-                        minDays: 3,
-                        minLaunches: 7,
-                        remindDays: 2,
-                        remindLaunches: 5,
-                        // appStoreIdentifier: '',
-                        // googlePlayIdentifier: '',
-                      );
-                      _rateMyApp.init().then((_) {
-                        // if (_rateMyApp.shouldOpenDialog) {
-                        _rateMyApp.showStarRateDialog(
-                          context,
-                          title: 'Enjoying Flutter Rating Prompt?',
-                          message: 'Please leave a rating!',
-                          actionsBuilder: (context, stars) {
-                            return [
-                              ElevatedButton(
-                                child: Text('Ok'),
-                                onPressed: () {},
-                              ),
-                            ];
-                          },
-                          dialogStyle: DialogStyle(
-                            titleAlign: TextAlign.center,
-                            messageAlign: TextAlign.center,
-                            messagePadding: EdgeInsets.only(bottom: 20.0),
-                          ),
-                          starRatingOptions: StarRatingOptions(),
-                        );
-                        // }
-                      });
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => RoleTypeGoogleMapPage(
-                      //               userType: user.roletype,
-                      //               service: "location",
-                      //               roleType: user.roletype,
-                      //             )));
-                    },
-                    child: buildChoice(
-                        "Rate",
-                        const Icon(
-                          Icons.star_rate,
-                          color: Colors.amber,
-                        ))),
-              ),
+              // Expanded(
+              //   child: GestureDetector(
+              //       onTap: () {
+              //         RateMyApp _rateMyApp = RateMyApp(
+              //           preferencesPrefix: 'Rate This User',
+              //           minDays: 3,
+              //           minLaunches: 7,
+              //           remindDays: 2,
+              //           remindLaunches: 5,
+              //           // appStoreIdentifier: '',
+              //           // googlePlayIdentifier: '',
+              //         );
+              //         _rateMyApp.init().then((_) {
+              //           // if (_rateMyApp.shouldOpenDialog) {
+              //           _rateMyApp.showStarRateDialog(
+              //             context,
+              //             title: 'Enjoying Flutter Rating Prompt?',
+              //             message: 'Please leave a rating!',
+              //             actionsBuilder: (context, stars) {
+              //               return [
+              //                 ElevatedButton(
+              //                   child: Text('Ok'),
+              //                   onPressed: () {},
+              //                 ),
+              //               ];
+              //             },
+              //             dialogStyle: DialogStyle(
+              //               titleAlign: TextAlign.center,
+              //               messageAlign: TextAlign.center,
+              //               messagePadding: EdgeInsets.only(bottom: 20.0),
+              //             ),
+              //             starRatingOptions: StarRatingOptions(),
+              //           );
+              //           // }
+              //         });
+              //         // Navigator.push(
+              //         //     context,
+              //         //     MaterialPageRoute(
+              //         //         builder: (context) => RoleTypeGoogleMapPage(
+              //         //               userType: user.roletype,
+              //         //               service: "location",
+              //         //               roleType: user.roletype,
+              //         //             )));
+              //       },
+              //       child: buildChoice(
+              //           "Rate",
+              //           const Icon(
+              //             Icons.star_rate,
+              //             color: Colors.amber,
+              //           ))),
+              // ),
             ],
           ),
         ),
