@@ -1,11 +1,15 @@
 import 'dart:async';
 
+import 'package:Car_service/tools/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
 class MapSample extends StatefulWidget {
+  final int id;
+
+  const MapSample({super.key, required this.id});
   @override
   State<MapSample> createState() => MapSampleState();
 }
@@ -22,6 +26,30 @@ List<Marker> markers = [
     markerId: MarkerId('first place'),
     infoWindow: InfoWindow(title: 'this place is so nice'),
     position: LatLng(32.061123, 36.088775),
+  ),
+  Marker(
+    rotation: 0.0,
+    markerId: MarkerId('first place'),
+    infoWindow: InfoWindow(title: 'this place is so nice'),
+    position: LatLng(32.0967382, 36.1089721),
+  ),
+  Marker(
+    rotation: 0.0,
+    markerId: MarkerId('first place'),
+    infoWindow: InfoWindow(title: 'this place is so nice'),
+    position: LatLng(32.0891173, 36.1081806),
+  ),
+  Marker(
+    rotation: 0.0,
+    markerId: MarkerId('first place'),
+    infoWindow: InfoWindow(title: 'this place is so nice'),
+    position: LatLng(32.0954904, 36.1093087),
+  ),
+  Marker(
+    rotation: 0.0,
+    markerId: MarkerId('first place'),
+    infoWindow: InfoWindow(title: 'this place is so nice'),
+    position: LatLng(32.0969443, 36.127042),
   ),
 ];
 final CameraPosition _kLake = CameraPosition(
@@ -114,6 +142,11 @@ class MapSampleState extends State<MapSample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Location'),
+        centerTitle: true,
+        backgroundColor: primecolor,
+      ),
       body: GoogleMap(
         mapType: MapType.normal,
         myLocationButtonEnabled: true,
@@ -126,14 +159,14 @@ class MapSampleState extends State<MapSample> {
         },
         markers: markers.toSet(),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Colors.black,
-        foregroundColor: Colors.white,
-        onPressed: () => _googleMapController
-            .animateCamera(CameraUpdate.newCameraPosition(_kLake)),
-        label: Text('current location'),
-        icon: Icon(Icons.location_on),
-      ),
+      // floatingActionButton: FloatingActionButton.extended(
+      //   backgroundColor: Colors.black,
+      //   foregroundColor: Colors.white,
+      //   onPressed: () => _googleMapController
+      //       .animateCamera(CameraUpdate.newCameraPosition(_kLake)),
+      //   label: Text('current location'),
+      //   icon: Icon(Icons.location_on),
+      // ),
     );
   }
 

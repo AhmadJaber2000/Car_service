@@ -31,9 +31,9 @@ class _UserNormalPageState extends State<UserNormalPage> {
             height: 30,
           ),
           buildContainer("Mechanics", RoleType.mechanic,
-              "assets/images/v-fococlipping-standard.png"),
+              "assets/images/car-repair-illustration-concept-vector-fococlipping-standard.png"),
           buildContainer("Trucks", RoleType.truck,
-              "assets/images/mechanic-1464584-1239754-fococlipping-standard.png"),
+              "assets/images/towing-fococlipping-standard.png"),
         ],
       ),
     );
@@ -75,11 +75,7 @@ class _UserNormalPageState extends State<UserNormalPage> {
                       fontWeight: FontWeight.bold)),
               const SizedBox(
                 height: 20,
-              ),
-              const Icon(
-                Icons.add_call,
-                color: Colors.cyan,
-                size: 20,
+                width: 20,
               ),
               Image.asset(
                 image,
@@ -117,7 +113,9 @@ class _UserNormalPageState extends State<UserNormalPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ListMechanicByRate()));
+                                  builder: (context) => ListMechanicByRate(
+                                        roletype: type,
+                                      )));
                         },
                         child: buildChoice(
                             "Rate",

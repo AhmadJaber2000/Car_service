@@ -1,3 +1,4 @@
+import 'package:Car_service/tools/constants.dart';
 import 'package:flutter/material.dart';
 
 import '../../List_User/ListUserByRate.dart';
@@ -28,9 +29,9 @@ class _UserTruckPageState extends State<UserTruckPage> {
             height: 30,
           ),
           buildContainer("Mechanics", RoleType.mechanic,
-              "assets/images/v-fococlipping-standard.png"),
+              "assets/images/car-repair-illustration-concept-vector-fococlipping-standard.png"),
           buildContainer("Trucks", RoleType.truck,
-              "assets/images/mechanic-1464584-1239754-fococlipping-standard.png"),
+              "assets/images/towing-fococlipping-standard.png"),
         ],
       ),
     );
@@ -72,11 +73,7 @@ class _UserTruckPageState extends State<UserTruckPage> {
                       fontWeight: FontWeight.bold)),
               const SizedBox(
                 height: 20,
-              ),
-              const Icon(
-                Icons.add_call,
-                color: Colors.cyan,
-                size: 20,
+                width: 20,
               ),
               Image.asset(
                 image,
@@ -104,7 +101,7 @@ class _UserTruckPageState extends State<UserTruckPage> {
                           "location",
                           const Icon(
                             Icons.location_on_sharp,
-                            color: Colors.blue,
+                            color: Colors.red,
                           ))),
                 ),
                 Expanded(
@@ -113,7 +110,9 @@ class _UserTruckPageState extends State<UserTruckPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ListMechanicByRate()));
+                                  builder: (context) => ListMechanicByRate(
+                                        roletype: type,
+                                      )));
                           // Navigator.push(
                           //     context,
                           //     MaterialPageRoute(
@@ -124,10 +123,10 @@ class _UserTruckPageState extends State<UserTruckPage> {
                           //             )));
                         },
                         child: buildChoice(
-                            "Rate",
+                            "Popular ${type}",
                             const Icon(
-                              Icons.star,
-                              color: Colors.amber,
+                              Icons.people,
+                              color: Colors.blue,
                             )))),
               ],
             ),

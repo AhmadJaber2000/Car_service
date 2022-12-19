@@ -238,7 +238,7 @@ class _EditProfileState extends State<EditProfile> {
     setState(() {
       user.firstName = firstnameController.text!;
       user.lastName = lastnameController.text!;
-      // user.email = emailController.text!;
+      user.email = emailController.text!;
       user.phoneNumber = phoneController.text!;
       user.lat = location.latitude!;
       user.long = location.longitude!;

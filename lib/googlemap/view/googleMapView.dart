@@ -3,6 +3,8 @@ import 'dart:collection';
 import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
+import 'package:Car_service/ChatIn/screens/chat_screen.dart';
+import 'package:Car_service/ChatIn/screens/home_screen.dart';
 import 'package:Car_service/authenticate/service/authenticate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -263,10 +265,11 @@ class _GoogleMapViewState extends State<GoogleMapView> {
                                     Expanded(
                                         child: GestureDetector(
                                             onTap: () {
-                                              // Navigator.push(
-                                              //     context,
-                                              //     MaterialPageRoute(
-                                              //         builder: (context) => ListMechanicByRate()));
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          HomeChatScreen()));
                                             },
                                             child: buildChoice(
                                                 "Chat",

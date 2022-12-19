@@ -87,13 +87,13 @@ class ItemList extends StatelessWidget {
                                 String phone3 = "0797070243"; //مركز ابو
                                 String phone4 = "0788724660";
                                 if (item.id == 0) {
-                                  launch('tel://$phone1}');
+                                  launch('tel://$phone1');
                                 } else if (item.id == 1) {
-                                  launch('tel://$phone2}');
+                                  launch('tel://$phone2');
                                 } else if (item.id == 2) {
-                                  launch('tel://$phone3}');
+                                  launch('tel://$phone3');
                                 } else if (item.id == 3) {
-                                  launch('tel://$phone4}');
+                                  launch('tel://$phone4');
                                 }
                               },
                               child: Icon(Icons.call)),
@@ -142,7 +142,9 @@ class ItemList extends StatelessWidget {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => MapSample()));
+                                        builder: (context) => MapSample(
+                                              id: item.id,
+                                            )));
                               },
                               child: Icon(
                                 Icons.location_on,

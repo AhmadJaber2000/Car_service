@@ -116,7 +116,9 @@ class _UserMechanicPageState extends State<UserMechanicPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ListMechanicByRate()));
+                                  builder: (context) => ListMechanicByRate(
+                                        roletype: type,
+                                      )));
                         },
                         child: buildChoice(
                             "Rate",
