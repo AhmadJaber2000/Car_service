@@ -1,7 +1,9 @@
+import 'package:Car_service/model/roleType.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../authenticate/service/authentication_bloc.dart';
+import '../home/view/home.dart';
 import '../onBoarding/data.dart';
 import '../onBoarding/on_boarding_screen.dart';
 import '../tools/constants.dart';
@@ -38,9 +40,13 @@ class _LauncherScreenState extends State<LauncherScreen> {
                     subtitles: subtitlesList,
                   ));
               break;
-            // case AuthState.authenticated:
-            //   pushReplacement(context, UserScreen(/*user: state.user!*/));
-            //   break;
+            case AuthState.authenticated:
+              ViewModel.pushReplacement(
+                  context,
+                  Home(
+                    type: '',
+                  ));
+              break;
             case AuthState.unauthenticated:
               ViewModel.pushReplacement(context, const WelcomeScreen());
               break;

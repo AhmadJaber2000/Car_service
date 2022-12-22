@@ -1,16 +1,19 @@
+import 'package:Car_service/authenticate/service/authenticate.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../model/user.dart';
 import '../../startpoint/main.dart';
+import '../../tools/constants.dart';
 import '../api/apis.dart';
 import '../models/chat_user.dart';
 import '../models/message.dart';
 import '../widgets/message_card.dart';
+import 'package:firebase_auth/firebase_auth.dart' as u;
 
 class ChatScreen extends StatefulWidget {
   final ChatUser user;
-  // final User userd;
 
   const ChatScreen({super.key, required this.user});
 
@@ -24,6 +27,16 @@ class _ChatScreenState extends State<ChatScreen> {
 
   //for handling message text changes
   final _textController = TextEditingController();
+  User userd = User();
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fun();
+  }
+
+  fun() async {
+    print(FireStoreUtils.getAllUsers());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -209,4 +222,21 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
     );
   }
+
+  u.User? currentUser = u.FirebaseAuth.instance.currentUser;
+  Future<User?> readUser() async {
+    final docUser = FirebaseFirestore.instance
+        .collection(usersCollection)
+        .doc(currentUser?.uid);
+    final snapshot = await docUser.get();
+    if (snapshot.exists) {
+      return User.fromJson(snapshot.data()!);
+    }
+  }
+
+  Stream<List<User>> readUsers() => FirebaseFirestore.instance
+      .collection(usersCollection)
+      .snapshots()
+      .map((snapshot) =>
+          snapshot.docs.map((doc) => User.fromJson(doc.data())).toList());
 }

@@ -1,9 +1,15 @@
+import 'package:Car_service/AdminPage/Screens/DeletUser.dart';
+import 'package:Car_service/AdminPage/Screens/Home/urlogohere.dart';
+import 'package:Car_service/AdminPage/Screens/ListAllUser.dart';
+import 'package:Car_service/ChatIn/screens/chat_screen.dart';
+import 'package:Car_service/List_User/ListUserByRate.dart';
+import 'package:Car_service/model/roleType.dart';
+import 'package:Car_service/tools/constants.dart';
+import 'package:Car_service/user/view/drawer.dart';
 import 'package:flutter/material.dart';
 
-import '../../Constants.dart';
-import '../../Firebase/auth.dart';
+import '../../components/Constants.dart';
 import '../../components/cardbtn.dart';
-import 'components/urlogohere.dart';
 
 class AdminRole extends StatelessWidget {
   const AdminRole({Key? key}) : super(key: key);
@@ -11,16 +17,16 @@ class AdminRole extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: DrawerView(),
       appBar: AppBar(
-        title: const Center(
-          child: kappbartxt,
-        ),
-        backgroundColor: kPrimaryColor,
+        title: Text("ADMIN"),
+        centerTitle: true,
+        backgroundColor: primecolor,
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        color: ksecondColor,
+        color: Colors.white,
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
           physics: const BouncingScrollPhysics(),
@@ -29,8 +35,16 @@ class AdminRole extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
+                  SizedBox(
+                    height: 250,
+                  ),
                   InkWell(
-                    onTap: () => {Navigator.pushNamed(context, '/add')},
+                    onTap: () => {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ListAllUser()))
+                    },
                     child: const cardbtn(
                       txt: "Manage",
                       icon: Icons.manage_accounts,
@@ -38,17 +52,17 @@ class AdminRole extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () => {
-                      //do smthing
-                      Navigator.pushNamed(context, "/edit")
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => DeleteUser()))
                     },
                     child: const cardbtn(
-                      txt: "Edit",
-                      icon: Icons.edit,
+                      txt: "Block User",
+                      icon: Icons.block,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 13),
+              // const SizedBox(height: 13),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -61,18 +75,18 @@ class AdminRole extends StatelessWidget {
                       icon: Icons.analytics_rounded,
                     ),
                   ),
-                  InkWell(
-                    onTap: () async => {
-                      await Auth().signout(),
-                      Navigator.of(context)
-                          .pushNamedAndRemoveUntil('/', (route) => false)
-                      //do another db thing
-                    },
-                    child: const cardbtn(
-                      txt: "Logout",
-                      icon: Icons.data_usage_rounded,
-                    ),
-                  ),
+                  // InkWell(
+                  //   onTap: () async => {
+                  //     await Auth().signout(),
+                  //     Navigator.of(context)
+                  //         .pushNamedAndRemoveUntil('/', (route) => false)
+                  //     //do another db thing
+                  //   },
+                  //   child: const cardbtn(
+                  //     txt: "Logout",
+                  //     icon: Icons.data_usage_rounded,
+                  //   ),
+                  // ),
                 ],
               ),
               const SizedBox(

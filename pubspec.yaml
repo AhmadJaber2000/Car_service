@@ -46,6 +46,11 @@ dependencies:
   flutter_easyloading: ^3.0.3
   firebase_app_check: ^0.1.1+6
   data_table_2: ^2.0.3
+  flutter_spinkit:
+  fluttertoast:
+  font_awesome_flutter:
+  carousel_slider:
+  floating_action_bubble:
 
 
 

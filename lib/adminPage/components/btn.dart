@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../Constants.dart';
+import 'Constants.dart';
 
 class btn extends StatelessWidget {
   var btntxt = "null";

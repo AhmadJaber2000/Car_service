@@ -107,7 +107,7 @@ class _UserMechanicPageState extends State<UserMechanicPage> {
                           "location",
                           const Icon(
                             Icons.location_on_sharp,
-                            color: Colors.blue,
+                            color: Colors.red,
                           ))),
                 ),
                 Expanded(
@@ -121,10 +121,10 @@ class _UserMechanicPageState extends State<UserMechanicPage> {
                                       )));
                         },
                         child: buildChoice(
-                            "Rate",
+                            "Popular ${type}",
                             const Icon(
-                              Icons.star,
-                              color: Colors.amber,
+                              Icons.people,
+                              color: Color(0xff326ada),
                             )))),
               ],
             ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../Constants.dart';
+import '../../tools/constants.dart';
+import 'Constants.dart';
 
 class cardbtn extends StatelessWidget {
   final txt;
@@ -19,7 +20,7 @@ class cardbtn extends StatelessWidget {
           blurRadius: 2,
           offset: Offset(0, 3), // changes position of shadow
         ),
-      ], color: kPrimaryColor, borderRadius: BorderRadius.circular(10)),
+      ], color: black, borderRadius: BorderRadius.circular(10)),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -27,9 +28,9 @@ class cardbtn extends StatelessWidget {
             child: Icon(
               icon,
               size: 40,
-              color: kthirdcolor,
+              color: Colors.white,
             ),
-            backgroundColor: ksecondColor,
+            backgroundColor: black,
             radius: 30,
           ),
           SizedBox(

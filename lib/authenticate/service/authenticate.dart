@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:Car_service/model/roleType.dart';
 import 'package:Car_service/model/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
@@ -9,8 +12,12 @@ import '../../tools/constants.dart';
 import '../../viewmodel/viewmodel.dart';
 
 class FireStoreUtils {
+  final CollectionReference usercol =
+      FirebaseFirestore.instance.collection(usersCollection);
   static FirebaseFirestore firestore = FirebaseFirestore.instance;
   static Reference storage = FirebaseStorage.instance.ref();
+  final CollectionReference vehiculecol =
+      FirebaseFirestore.instance.collection(usersCollection);
 
   static Future<User?> getCurrentUser(String uid) async {
     DocumentSnapshot<Map<String, dynamic>> userDocument =
@@ -21,6 +28,8 @@ class FireStoreUtils {
       return null;
     }
   }
+
+  static auth.User get user => auth.FirebaseAuth.instance.currentUser!;
 
   static Future<User> updateCurrentUser(User user) async {
     return await firestore
@@ -87,6 +96,7 @@ class FireStoreUtils {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection(usersCollection)
         .where('roletype', isEqualTo: type)
+        .orderBy('rate', descending: true)
         .get();
     print("LENGTH getMarchantsLocation ${querySnapshot.docs.length}");
     for (int i = 0; i < querySnapshot.docs.length; i++) {
@@ -103,6 +113,18 @@ class FireStoreUtils {
           phoneNumber: a.get('phoneNumber'),
           userID: a.get('id')));
     }
+    return users;
+  }
+
+  static Future<List<User>> getAllUsers() async {
+    List<User> users = [];
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection(usersCollection)
+        .where('id', isNotEqualTo: user.uid)
+        .get();
+
+    print("LENGTH getMarchantsLocation ${querySnapshot.docs.length}");
+    print(users);
     return users;
   }
 
@@ -131,6 +153,14 @@ class FireStoreUtils {
       }
     }
     return users;
+  }
+
+  getUser() async {
+    QuerySnapshot snapshot =
+        await usercol.where('roletype', isEqualTo: 'Mechanic').get();
+    snapshot.docs.forEach((DocumentSnapshot doc) {
+      print(doc.data());
+    });
   }
 
   static loginWithFacebook() async {

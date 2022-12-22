@@ -1,36 +1,30 @@
 import 'package:Car_service/ChatIn/api/apis.dart';
 import 'package:Car_service/ChatIn/screens/home_screen.dart';
-import 'package:Car_service/authenticate/service/authenticate.dart';
 import 'package:Car_service/model/roleType.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_my_app/rate_my_app.dart';
-import '../googlemap/view/roleTypeGoogleMapPage.dart';
-import '../model/user.dart';
 import 'package:firebase_auth/firebase_auth.dart' as path;
-import '../tools/constants.dart';
 
-class ListMechanicByRate extends StatefulWidget {
-  const ListMechanicByRate({Key? key, required this.roletype})
-      : super(key: key);
-  final String roletype;
+import '../../googlemap/view/roleTypeGoogleMapPage.dart';
+import '../../model/user.dart';
+import '../../tools/constants.dart';
+import '../components/cardbtn.dart';
+
+class ListAllUser extends StatefulWidget {
+  const ListAllUser({Key? key}) : super(key: key);
 
   @override
-  State<ListMechanicByRate> createState() => _ListMechanicByRateState();
+  State<ListAllUser> createState() => _ListAllUserState();
 }
 
-class _ListMechanicByRateState extends State<ListMechanicByRate> {
-  List<User> user = [];
+class _ListAllUserState extends State<ListAllUser> {
+  // List<User> user = [];
   @override
   void initState() {
     super.initState();
-  }
-
-  function() async {
-    FireStoreUtils.getAllUsers();
-    print(FireStoreUtils.getAllUsers());
   }
 
   @override
@@ -39,32 +33,22 @@ class _ListMechanicByRateState extends State<ListMechanicByRate> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
-          'List By Rate',
+          'All User',
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
         backgroundColor: primecolor,
       ),
-      body: FutureBuilder(
-          future: FireStoreUtils.getMarchantsLocation(widget.roletype),
+      body: StreamBuilder<List<User>>(
+          stream: readUsers(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return Text("Something has erorr");
             } else if (snapshot.hasData) {
               final users = snapshot.data!;
-              if (widget.roletype == "Truck") {
-                return ListView(
-                  children: users.map(buildUser).toList(),
-                );
-              } else if (widget.roletype == "Mechanic") {
-                return ListView(
-                  children: users.map(buildUser).toList(),
-                );
-                // return ListView(
-                //   children: users.map(buildUser).toList(),
-                // );
-              }
-              return Container();
+              return ListView(
+                children: users.map(buildUser).toList(),
+              );
             } else {
               return CircularProgressIndicator();
             }
@@ -91,10 +75,7 @@ class _ListMechanicByRateState extends State<ListMechanicByRate> {
           gradient: LinearGradient(
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
-            colors: [
-              Colors.white,
-              Colors.cyan,
-            ],
+            colors: [Color(0xff004c4c), Color(0xff006666)],
           )),
       child: Column(children: [
         Row(
@@ -106,20 +87,15 @@ class _ListMechanicByRateState extends State<ListMechanicByRate> {
                     fontSize: 30,
                     fontWeight: FontWeight.bold)),
             const SizedBox(
-              height: 20,
-            ),
-            const Icon(
-              Icons.add_call,
-              color: Colors.cyan,
-              size: 20,
+              height: 60,
             ),
             const SizedBox(
               width: 20,
             ),
             Text(" Rate : ${user.rate}",
                 style: TextStyle(
-                    color: Colors.cyan,
-                    fontSize: 30,
+                    color: Color(0xffb2d8d8),
+                    fontSize: 20,
                     fontWeight: FontWeight.bold))
             // Image.asset(
             //   user.email,
@@ -131,25 +107,35 @@ class _ListMechanicByRateState extends State<ListMechanicByRate> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(
-                child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => RoleTypeGoogleMapPage(
-                                    userType: user.roletype,
-                                    service: "location",
-                                    roleType: user.roletype,
-                                  )));
-                    },
-                    child: buildChoice(
-                        "location",
-                        const Icon(
-                          Icons.location_on_sharp,
-                          color: Colors.red,
-                        ))),
-              ),
+              // InkWell(
+              //   onTap: () => {
+              //     Navigator.push(context,
+              //         MaterialPageRoute(builder: (context) => ListAllUser()))
+              //   },
+              //   child: const cardbtn(
+              //     txt: "Manage",
+              //     icon: Icons.manage_accounts,
+              //   ),
+              // ),
+              // Expanded(
+              //   child: GestureDetector(
+              //       onTap: () {
+              //         Navigator.push(
+              //             context,
+              //             MaterialPageRoute(
+              //                 builder: (context) => RoleTypeGoogleMapPage(
+              //                       userType: user.roletype,
+              //                       service: "location",
+              //                       roleType: user.roletype,
+              //                     )));
+              //       },
+              //       child: buildChoice(
+              //           "location",
+              //           const Icon(
+              //             Icons.location_on_sharp,
+              //             color: Colors.red,
+              //           ))),
+              // ),
               Expanded(
                   child: GestureDetector(
                       onTap: () {

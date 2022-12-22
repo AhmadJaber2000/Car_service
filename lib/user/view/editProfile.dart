@@ -1,13 +1,17 @@
 import 'package:Car_service/model/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart' as u;
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:location/location.dart';
 
 import '../../authenticate/service/authenticate.dart';
+import '../../authenticate/signupService/sign_up_bloc.dart';
+import '../../authenticate/signupService/sign_up_event.dart';
 import '../../googlemap/service/location_service.dart';
 import '../../tools/constants.dart';
-import '../../viewmodel/viewmodel.dart';
+import '../../viewmodel/viewModel.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({Key? key}) : super(key: key);
@@ -77,10 +81,29 @@ class _EditProfileState extends State<EditProfile> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const CircleAvatar(
+              CircleAvatar(
                 radius: 50,
                 backgroundImage: AssetImage('assets/images/placeholder.jpg'),
+                // child: Positioned(
+                //   right: 60,
+                //   bottom: 900,
+                //   child: FloatingActionButton(
+                //     backgroundColor: const Color(0xffae0001),
+                //     mini: true,
+                //     onPressed: () => _onCameraClick(context),
+                //     child: Icon(
+                //       Icons.camera_alt,
+                //       color: ViewModel.isDarkMode(context)
+                //           ? Colors.black
+                //           : Colors.white,
+                //     ),
+                //   ),
+                // ),
               ),
+              // const CircleAvatar(
+              //   radius: 50,
+              //   backgroundImage: AssetImage('assets/images/placeholder.jpg'),
+              // ),
               Padding(
                 padding:
                     const EdgeInsets.only(top: 16.0, right: 8.0, left: 8.0),
@@ -117,7 +140,7 @@ class _EditProfileState extends State<EditProfile> {
                 padding:
                     const EdgeInsets.only(top: 16.0, right: 8.0, left: 8.0),
                 child: TextFormField(
-                  enabled: false, //Not clickable and not editable
+                  enabled: enabled, //Not clickable and not editable
                   readOnly: readOnly,
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next,
@@ -210,9 +233,7 @@ class _EditProfileState extends State<EditProfile> {
                       setState(() {
                         // lat = location.latitude;
                         // long = location.longitude;
-                        print(lat);
-                        print(long);
-                        updateUser();
+                        updatelocation();
                       });
                     }),
               ),
@@ -240,6 +261,14 @@ class _EditProfileState extends State<EditProfile> {
       user.lastName = lastnameController.text!;
       user.email = emailController.text!;
       user.phoneNumber = phoneController.text!;
+    });
+    print(user.firstName);
+    await FireStoreUtils.updateCurrentUser(user);
+  }
+
+  Future<User?> updatelocation() async {
+    print("update");
+    setState(() {
       user.lat = location.latitude!;
       user.long = location.longitude!;
     });

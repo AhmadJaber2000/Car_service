@@ -11,7 +11,6 @@ import '../../tools/constants.dart';
 import '../api/apis.dart';
 import '../models/chat_user.dart';
 import '../widgets/chat_user_card.dart';
-import 'profile_screen.dart';
 
 //home screen -- where all available contacts are shown
 class HomeChatScreen extends StatefulWidget {
@@ -24,10 +23,11 @@ class HomeChatScreen extends StatefulWidget {
 class _HomeChatScreenState extends State<HomeChatScreen> {
   // for storing all users
   List<ChatUser> _list = [];
+  List<User> users = [];
 
   // for storing searched items
   final List<ChatUser> _searchList = [];
-  List<User> _ListUser = [];
+
   // for storing search status
   bool _isSearching = false;
 
@@ -38,7 +38,11 @@ class _HomeChatScreenState extends State<HomeChatScreen> {
     function();
   }
 
-  function() async {}
+  function() async {
+    users = await FireStoreUtils.getAllUsers();
+    print(users);
+  }
+
   @override
   Widget build(BuildContext context) {
     Size mq = MediaQuery.of(context).size;
@@ -88,23 +92,16 @@ class _HomeChatScreenState extends State<HomeChatScreen> {
                           [];
 
                   if (_list.isNotEmpty) {
-                    return StreamBuilder(
-                        stream: readUsers(),
-                        builder: (context, snapshot) {
-                          // final users = snapshot.data;
-                          // final User userd =;
-                          return ListView.builder(
-                              itemCount: _isSearching
-                                  ? _searchList.length
-                                  : _list.length,
-                              padding: EdgeInsets.only(top: mq.height * .01),
-                              physics: const BouncingScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                return ChatUserCard(
-                                  user: _list[index],
-                                );
-                                // return Text('Name: ${list[index]}');
-                              });
+                    return ListView.builder(
+                        itemCount:
+                            _isSearching ? _searchList.length : _list.length,
+                        padding: EdgeInsets.only(top: mq.height * .01),
+                        physics: const BouncingScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return ChatUserCard(
+                            user: _list[index],
+                          );
+                          // return Text('Name: ${list[index]}');
                         });
                   } else {
                     return const Center(

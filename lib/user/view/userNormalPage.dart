@@ -3,6 +3,7 @@ import 'package:Car_service/List_User/ListUserByRate.dart';
 import 'package:flutter/material.dart';
 import '../../googlemap/service/location_service.dart';
 import '../../model/roleType.dart';
+import '../../model/user.dart';
 import '../../tools/constants.dart';
 import 'drawer.dart';
 import '../../googlemap/view/roleTypeGoogleMapPage.dart';
@@ -103,7 +104,7 @@ class _UserNormalPageState extends State<UserNormalPage> {
                           "location",
                           const Icon(
                             Icons.location_on_sharp,
-                            color: Colors.blue,
+                            color: Colors.red,
                           ))),
                 ),
                 Expanded(
@@ -113,15 +114,15 @@ class _UserNormalPageState extends State<UserNormalPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ListMechanicByRate(
+                                  builder: (ctx) => ListMechanicByRate(
                                         roletype: type,
                                       )));
                         },
                         child: buildChoice(
-                            "Rate",
+                            "Popular${type}",
                             const Icon(
-                              Icons.star,
-                              color: Colors.amber,
+                              Icons.people,
+                              color: Color(0xff326ada),
                             )))),
               ],
             ),

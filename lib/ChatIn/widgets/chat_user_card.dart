@@ -9,7 +9,6 @@ import '../screens/chat_screen.dart';
 //card to represent a single user in home screen
 class ChatUserCard extends StatefulWidget {
   final ChatUser user;
-  // final User userd;
 
   const ChatUserCard({super.key, required this.user});
 
