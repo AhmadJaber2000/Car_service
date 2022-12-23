@@ -1,5 +1,6 @@
 import 'package:Car_service/ChatIn/api/apis.dart';
 import 'package:Car_service/ChatIn/screens/home_screen.dart';
+import 'package:Car_service/ChatNew/screens/chat_screen.dart';
 import 'package:Car_service/model/roleType.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -142,7 +143,7 @@ class _ListAllUserState extends State<ListAllUser> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => HomeChatScreen()));
+                                builder: (context) => ChatScreen(user: user)));
                       },
                       child: buildChoice(
                           "Chat",

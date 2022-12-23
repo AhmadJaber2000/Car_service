@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 import 'package:firebase_auth/firebase_auth.dart' as path;
+import '../../authenticate/service/authenticate.dart';
 import '../../model/user.dart';
 import '../../tools/constants.dart';
 import '../components/cardbtn.dart';
@@ -138,11 +139,73 @@ class _DeleteUserState extends State<DeleteUser> {
               Expanded(
                   child: GestureDetector(
                       onTap: () {
-                        final docUser = FirebaseFirestore.instance
-                            .collection(usersCollection)
-                            .doc(user.userID);
-                        print(user.userID);
-                        docUser.delete();
+                        showDialog<void>(
+                          context: context,
+                          barrierDismissible: false, // user must tap button!
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      new BorderRadius.circular(30.0)),
+                              backgroundColor: Colors.white,
+                              titleTextStyle: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: primecolor),
+                              title: const Text('Delete Account'),
+                              content: SingleChildScrollView(
+                                child: ListBody(
+                                  children: const <Widget>[
+                                    Text(
+                                      'Sure Want To Delete This Account ?',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: primecolor),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: const Text(
+                                    'Delete',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  onPressed: () {
+                                    final docUser = FirebaseFirestore.instance
+                                        .collection(usersCollection)
+                                        .doc(user.userID);
+                                    print(user.userID);
+                                    docUser.delete();
+                                    Navigator.of(context).pop();
+                                  },
+                                  style: TextButton.styleFrom(
+                                      primary: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              new BorderRadius.circular(30.0)),
+                                      backgroundColor: primecolor),
+                                ),
+                                TextButton(
+                                  child: const Text(
+                                    'Cancel',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  style: TextButton.styleFrom(
+                                      primary: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              new BorderRadius.circular(30.0)),
+                                      backgroundColor: black),
+                                ),
+                              ],
+                            );
+                          },
+                        );
                       },
                       child: buildChoice(
                           "Remove User",

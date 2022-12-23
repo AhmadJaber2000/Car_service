@@ -1,5 +1,6 @@
 import 'package:Car_service/ChatIn/api/apis.dart';
 import 'package:Car_service/ChatIn/screens/home_screen.dart';
+import 'package:Car_service/ChatNew/screens/chat_screen.dart';
 import 'package:Car_service/authenticate/service/authenticate.dart';
 import 'package:Car_service/model/roleType.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_my_app/rate_my_app.dart';
+import '../ChatNew/screens/home_screen.dart';
 import '../googlemap/view/roleTypeGoogleMapPage.dart';
 import '../model/user.dart';
 import 'package:firebase_auth/firebase_auth.dart' as path;
@@ -156,7 +158,11 @@ class _ListMechanicByRateState extends State<ListMechanicByRate> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => HomeChatScreen()));
+                                builder: (context) => ChatScreen(user: user)));
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => ChatWindow()));
                       },
                       child: buildChoice(
                           "Chat",

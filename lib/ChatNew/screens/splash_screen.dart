@@ -1,10 +1,6 @@
 // import 'dart:developer';
-//
-// import 'package:Car_service/welcome/welcome_screen.dart';
 // import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
-// import '../../authenticate/view/login_screen.dart';
-// import '../../startpoint/main.dart';
 // import '../api/apis.dart';
 // import 'auth/login_screen.dart';
 // import 'home_screen.dart';
@@ -32,7 +28,7 @@
 //         log('\nUser: ${APIs.auth.currentUser}');
 //         //navigate to home screen
 //         Navigator.pushReplacement(
-//             context, MaterialPageRoute(builder: (_) => const WelcomeScreen()));
+//             context, MaterialPageRoute(builder: (_) => const ChatWindow()));
 //       } else {
 //         //navigate to login screen
 //         Navigator.pushReplacement(
@@ -43,8 +39,10 @@
 //
 //   @override
 //   Widget build(BuildContext context) {
-//     //initializing media query (for getting device screen size)
 //     Size mq = MediaQuery.of(context).size;
+//
+//     //initializing media query (for getting device screen size)
+//     mq = MediaQuery.of(context).size;
 //
 //     return Scaffold(
 //       //body
@@ -60,7 +58,7 @@
 //         Positioned(
 //             bottom: mq.height * .15,
 //             width: mq.width,
-//             child: const Text('Made In Jordan',
+//             child: const Text('MADE IN INDIA WITH ❤️',
 //                 textAlign: TextAlign.center,
 //                 style: TextStyle(
 //                     fontSize: 16, color: Colors.black87, letterSpacing: .5))),

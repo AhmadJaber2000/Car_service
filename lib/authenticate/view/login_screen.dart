@@ -7,6 +7,7 @@ import '../../viewmodel/viewmodel.dart';
 import '../loginService/login_bloc.dart';
 import '../loginService/login_event.dart';
 import '../loginService/login_state.dart';
+import '../service/authenticate.dart';
 import '../service/authentication_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -44,6 +45,7 @@ class _LoginPageState extends State<LoginScreen> {
                 listener: (context, state) async {
                   await context.read<LoadingCubit>().hideLoading();
                   if (state.authState == AuthState.authenticated) {
+                    FireStoreUtils.updateActiveStatus(true);
                     return ViewModel.route(context);
                   } else {
                     if (!mounted) return;

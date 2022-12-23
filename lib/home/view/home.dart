@@ -1,6 +1,7 @@
 import 'package:Car_service/model/roleType.dart';
 import 'package:Car_service/user/view/userMechanicPage.dart';
 import 'package:Car_service/user/view/userTruckPage.dart';
+import 'package:Car_service/welcome/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import '../../ChatIn/screens/home_screen.dart';
 import '../../user/view/userNormalPage.dart';
@@ -31,6 +32,6 @@ class Home extends StatelessWidget {
                 ? const UserMechanicPage()
                 : type == RoleType.truck
                     ? const UserTruckPage()
-                    : HomeChatScreen());
+                    : Container());
   }
 }

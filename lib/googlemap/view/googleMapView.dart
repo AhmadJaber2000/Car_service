@@ -13,6 +13,7 @@ import 'package:location/location.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../ChatNew/screens/home_screen.dart';
 import '../../model/user.dart';
 import '../../tools/constants.dart';
 import '../service/location_service.dart';
@@ -269,7 +270,7 @@ class _GoogleMapViewState extends State<GoogleMapView> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          HomeChatScreen()));
+                                                          ChatWindow()));
                                             },
                                             child: buildChoice(
                                                 "Chat",

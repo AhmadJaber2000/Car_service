@@ -13,6 +13,8 @@ dependencies:
   cloud_functions: ^4.0.5
   intl:
   lottie: ^1.1.0
+  emoji_picker_flutter:
+
 
   shared_preferences: ^2.0.15
   progress_dialog:
