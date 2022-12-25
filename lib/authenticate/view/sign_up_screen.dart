@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:Car_service/authenticate/service/authenticate.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -50,6 +51,7 @@ class _SignUpState extends State<SignUpScreen> {
                 listener: (context, state) {
                   context.read<LoadingCubit>().hideLoading();
                   if (state.authState == AuthState.authenticated) {
+                    FireStoreUtils.updateActiveStatus(true);
                     return ViewModel.route(context);
                   } else {
                     ViewModel.showSnackBar(
@@ -74,6 +76,7 @@ class _SignUpState extends State<SignUpScreen> {
                             firstName: firstName,
                             userType: userType,
                             lat: lat,
+                            createdAt: DateTime.now().toString(),
                             phonenumber: phonenumber,
                             rate: 0,
                             long: long));

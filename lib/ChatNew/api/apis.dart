@@ -144,7 +144,7 @@ class APIs {
     final time = DateTime.now().millisecondsSinceEpoch.toString();
 
     //message to send
-    final Message message = Message(
+    final MessageChat message = MessageChat(
         toId: chatUser.id,
         msg: msg,
         read: '',
@@ -158,7 +158,7 @@ class APIs {
   }
 
   //update read status of message
-  static Future<void> updateMessageReadStatus(Message message) async {
+  static Future<void> updateMessageReadStatus(MessageChat message) async {
     firestore
         .collection('chats/${getConversationID(message.fromId)}/messages/')
         .doc(message.sent)

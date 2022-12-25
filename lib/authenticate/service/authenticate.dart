@@ -1,7 +1,5 @@
 import 'dart:developer';
 import 'dart:io';
-
-import 'package:Car_service/model/roleType.dart';
 import 'package:Car_service/model/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
@@ -9,7 +7,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:the_apple_sign_in/the_apple_sign_in.dart' as apple;
-import '../../ChatIn/models/message.dart';
 import '../../ChatNew/models/message.dart';
 import '../../tools/constants.dart';
 import '../../viewmodel/viewmodel.dart';
@@ -19,8 +16,6 @@ class FireStoreUtils {
       FirebaseFirestore.instance.collection(usersCollection);
   static FirebaseFirestore firestore = FirebaseFirestore.instance;
   static Reference storage = FirebaseStorage.instance.ref();
-  final CollectionReference vehiculecol =
-      FirebaseFirestore.instance.collection(usersCollection);
   static FirebaseStorage storageimage = FirebaseStorage.instance;
   static auth.FirebaseAuth authentication = auth.FirebaseAuth.instance;
 
@@ -121,7 +116,7 @@ class FireStoreUtils {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection(usersCollection)
         .where('roletype', isEqualTo: type)
-        .orderBy('rate', descending: true)
+        .where('id', isNotEqualTo: user!.uid)
         .get();
     print("LENGTH getMarchantsLocation ${querySnapshot.docs.length}");
     for (int i = 0; i < querySnapshot.docs.length; i++) {
@@ -250,6 +245,7 @@ class FireStoreUtils {
       double? long,
       firstName = 'Anonymous',
       double? rate,
+      String? createdAt,
       String? phonenumber,
       lastName = 'User'}) async {
     try {
@@ -268,6 +264,7 @@ class FireStoreUtils {
           userID: result.user?.uid ?? '',
           lastName: lastName,
           roletype: userType,
+          createdAt: DateTime.now().toString(),
           lat: lat!,
           long: long!,
           rate: rate!,
@@ -495,7 +492,7 @@ class FireStoreUtils {
   // update online or last active status of user
   static Future<void> updateActiveStatus(bool isOnline) async {
     firestore.collection('User').doc(user!.uid).update({
-      'is_online': isOnline,
+      'isOnline': isOnline,
       'last_active': DateTime.now().millisecondsSinceEpoch.toString()
     });
   }
@@ -524,7 +521,7 @@ class FireStoreUtils {
     final time = DateTime.now().millisecondsSinceEpoch.toString();
 
     //message to send
-    final Message message = Message(
+    final MessageChat message = MessageChat(
         toId: chatUser.userID,
         msg: msg,
         read: '',
@@ -538,7 +535,7 @@ class FireStoreUtils {
   }
 
   //update read status of message
-  static Future<void> updateMessageReadStatus(Message message) async {
+  static Future<void> updateMessageReadStatus(MessageChat message) async {
     firestore
         .collection('chats/${getConversationID(message.fromId)}/messages/')
         .doc(message.sent)
@@ -573,5 +570,51 @@ class FireStoreUtils {
     //updating image in firestore database
     final imageUrl = await ref.getDownloadURL();
     await sendMessage(chatUser, imageUrl, Type.image);
+  }
+
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getAllComments(
+      String uid) {
+    return firestore
+        .collection('comments')
+        .where('userId', isEqualTo: uid)
+        .snapshots();
+  }
+
+  // static Future<List<QuerySnapshot<Map<String, dynamic>>>> getAllUserRoletype(
+  //     String Role) {
+  //   return firestore
+  //       .collection('User')
+  //       .where('id', isNotEqualTo: user!.uid)
+  //       .where('roletype', isEqualTo: Role)
+  //       .snapshots()
+  //       .toList();
+  // }
+
+  static Future<List<User>> getAllUserRole(String type) async {
+    List<User> users = [];
+    print("type $type");
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+        .instance
+        .collection(usersCollection)
+        .where('id', isNotEqualTo: user!.uid)
+        .where('roletype', isEqualTo: type)
+        .get();
+
+    print("LENGTH getMarchantsLocation ${querySnapshot.docs.length}");
+    for (int i = 0; i < querySnapshot.docs.length; i++) {
+      var a = querySnapshot.docs[i];
+      print("rate ${a.get("rate")}");
+      users.add(await User(
+          firstName: a.get("firstName"),
+          lastName: a.get("lastName"),
+          email: a.get("email"),
+          lat: a.get("lat"),
+          long: a.get("long"),
+          roletype: a.get("roletype"),
+          rate: a.get("rate"),
+          phoneNumber: a.get('phoneNumber'),
+          userID: a.get('id')));
+    }
+    return users;
   }
 }

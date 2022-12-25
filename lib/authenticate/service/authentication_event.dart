@@ -39,12 +39,14 @@ class SignupWithEmailAndPasswordEvent extends AuthenticationEvent {
   double? long;
   double? rate;
   String? phonenumber;
+  String createdAt;
 
   SignupWithEmailAndPasswordEvent(
       {required this.emailAddress,
       required this.password,
       this.imageData,
       this.lat,
+      required this.createdAt,
       this.long,
       this.phonenumber,
       this.rate,

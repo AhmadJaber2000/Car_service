@@ -24,7 +24,7 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   //for storing all messages
-  List<Message> _list = [];
+  List<MessageChat> _list = [];
 
   //for handling message text changes
   final _textController = TextEditingController();
@@ -78,7 +78,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         case ConnectionState.done:
                           final data = snapshot.data?.docs;
                           _list = data
-                                  ?.map((e) => Message.fromJson(e.data()))
+                                  ?.map((e) => MessageChat.fromJson(e.data()))
                                   .toList() ??
                               [];
 

@@ -4,6 +4,9 @@ import '../../List_User/ListUserByRate.dart';
 import '../../PartShops/screen/HomeScreen.dart';
 import '../../googlemap/view/roleTypeGoogleMapPage.dart';
 import '../../model/roleType.dart';
+import '../../smarthome/Model/homeinfodata.dart';
+import '../../tools/constants.dart';
+import 'drawer.dart';
 
 class UserMechanicPage extends StatefulWidget {
   const UserMechanicPage({Key? key}) : super(key: key);
@@ -12,32 +15,58 @@ class UserMechanicPage extends StatefulWidget {
   State<UserMechanicPage> createState() => _UserMechanicPageState();
 }
 
-class _UserMechanicPageState extends State<UserMechanicPage> {
+class _UserMechanicPageState extends State<UserMechanicPage>
+    with TickerProviderStateMixin {
+  late TabController _tabController;
+  List<HomeInfoModel> homeInfoData = HomeInfoData().infoData;
+
+  @override
+  void initState() {
+    _tabController =
+        new TabController(length: homeInfoData.length, vsync: this);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 5,
-            ),
-            const Text("What are you looking for ?",
-                style: TextStyle(
-                    color: Colors.cyan,
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold)),
-            const SizedBox(
-              height: 30,
-            ),
-            buildContainer("Mechanics", RoleType.mechanic,
-                "assets/images/car-repair-illustration-concept-vector-fococlipping-standard.png"),
-            buildContainer("Trucks", RoleType.truck,
-                "assets/images/towing-fococlipping-standard.png"),
-            buildContainerShop()
-          ],
+    final bool isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
+
+    return Scaffold(
+      drawer: const DrawerView(),
+      appBar: (AppBar(
+        brightness: Brightness.light,
+        backgroundColor: Color(0xff004c4c),
+        elevation: 0,
+        title: Text(
+          'Home',
+          style: TextStyle(color: Colors.white),
+        ),
+        centerTitle: true,
+      )),
+      body: Container(
+        color: Color(0xffb2d8d8),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 5,
+              ),
+              const Text("What are you looking for ?",
+                  style: TextStyle(
+                      color: Color(0xff008080),
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold)),
+              const SizedBox(
+                height: 30,
+              ),
+              buildContainer("Mechanics", RoleType.mechanic,
+                  "assets/images/car-repair-illustration-concept-vector-fococlipping-standard.png"),
+              buildContainer("Trucks", RoleType.truck,
+                  "assets/images/towing-fococlipping-standard.png"),
+              buildContainerShop()
+            ],
+          ),
         ),
       ),
     );
@@ -50,7 +79,7 @@ class _UserMechanicPageState extends State<UserMechanicPage> {
       width: double.infinity,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.white, width: 2),
+          border: Border.all(color: Color(0xff006666), width: 2),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.5),
@@ -63,8 +92,8 @@ class _UserMechanicPageState extends State<UserMechanicPage> {
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
             colors: [
-              Colors.white,
-              Colors.cyan,
+              Color(0xff006666),
+              Color(0xff004c4c),
             ],
           )),
       child: Column(
@@ -106,7 +135,7 @@ class _UserMechanicPageState extends State<UserMechanicPage> {
                       child: buildChoice(
                           "location",
                           const Icon(
-                            Icons.location_on_sharp,
+                            Icons.location_pin,
                             color: Colors.red,
                           ))),
                 ),
@@ -124,7 +153,7 @@ class _UserMechanicPageState extends State<UserMechanicPage> {
                             "Popular ${type}",
                             const Icon(
                               Icons.people,
-                              color: Color(0xff326ada),
+                              color: Color(0xff317873),
                             )))),
               ],
             ),
@@ -154,8 +183,8 @@ class _UserMechanicPageState extends State<UserMechanicPage> {
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
             colors: [
-              Colors.white,
-              Colors.cyan,
+              Color(0xff006666),
+              Color(0xff004c4c),
             ],
           )),
       child: Column(
@@ -197,8 +226,8 @@ class _UserMechanicPageState extends State<UserMechanicPage> {
                       child: buildChoice(
                           "location",
                           const Icon(
-                            Icons.location_on_sharp,
-                            color: Colors.blue,
+                            Icons.location_pin,
+                            color: Colors.red,
                           ))),
                 ),
                 Expanded(
@@ -213,7 +242,7 @@ class _UserMechanicPageState extends State<UserMechanicPage> {
                             "Popular Shop",
                             const Icon(
                               Icons.car_repair,
-                              color: Colors.amber,
+                              color: Color(0xff317873),
                             )))),
               ],
             ),
@@ -232,7 +261,7 @@ class _UserMechanicPageState extends State<UserMechanicPage> {
         children: [
           Text(title,
               style: TextStyle(
-                  color: Colors.cyan,
+                  color: Color(0xff008080),
                   fontSize: 18,
                   fontWeight: FontWeight.bold)),
           icons

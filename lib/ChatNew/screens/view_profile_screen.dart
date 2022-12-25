@@ -1,9 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import '../../authenticate/service/authenticate.dart';
 import '../../model/user.dart';
-import '../helper/my_date_util.dart';
+import '../../tools/constants.dart';
+import '../../viewmodel/viewModel.dart';
 
 //view profile screen -- to view profile of user
 class ViewProfileScreen extends StatefulWidget {
@@ -16,6 +17,30 @@ class ViewProfileScreen extends StatefulWidget {
 }
 
 class _ViewProfileScreenState extends State<ViewProfileScreen> {
+  bool readOnly = true;
+
+  TextEditingController IsOnlineController = TextEditingController();
+  TextEditingController fullNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController aboutController = TextEditingController();
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final TextEditingController _commentController = TextEditingController();
+
+  User userd = User();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fun();
+  }
+
+  fun() async {
+    userd = (await readUser())!;
+    setControllers(userd);
+    FireStoreUtils.getUserInfo(widget.user);
+  }
+
   @override
   Widget build(BuildContext context) {
     Size mq = MediaQuery.of(context).size;
@@ -25,80 +50,148 @@ class _ViewProfileScreenState extends State<ViewProfileScreen> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
           //app bar
-          appBar: AppBar(title: Text(widget.user.fullName())),
-          floatingActionButton: //user about
-              Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                'Joined On: ',
-                style: TextStyle(
-                    color: Colors.black87,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 15),
-              ),
-              Text(
-                  MyDateUtil.getLastMessageTime(
-                      context: context,
-                      time: widget.user.createdAt,
-                      showYear: true),
-                  style: const TextStyle(color: Colors.black54, fontSize: 15)),
-            ],
+          appBar: AppBar(
+            title: Text(widget.user.fullName()),
+            centerTitle: true,
+            backgroundColor: Color(0xff004c4c),
           ),
-
           //body
-          body: Padding(
-            padding: EdgeInsets.symmetric(horizontal: mq.width * .05),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  // for adding some space
-                  SizedBox(width: mq.width, height: mq.height * .03),
-
-                  //user profile picture
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(mq.height * .1),
-                    child: CachedNetworkImage(
-                      width: mq.height * .2,
-                      height: mq.height * .2,
-                      fit: BoxFit.cover,
-                      imageUrl: widget.user.profilePictureURL,
-                      errorWidget: (context, url, error) => const CircleAvatar(
-                          child: Icon(CupertinoIcons.person)),
-                    ),
-                  ),
-
-                  // for adding some space
-                  SizedBox(height: mq.height * .03),
-
-                  // user email label
-                  Text(widget.user.email,
-                      style:
-                          const TextStyle(color: Colors.black87, fontSize: 16)),
-
-                  // for adding some space
-                  SizedBox(height: mq.height * .02),
-
-                  //user about
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'About: ',
-                        style: TextStyle(
-                            color: Colors.black87,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 15),
+          body: Column(children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: mq.width * .05),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          top: 16.0, right: 8.0, left: 8.0),
+                      child: TextFormField(
+                        // enabled: enabled,
+                        //Not clickable and not editable
+                        readOnly: readOnly,
+                        textCapitalization: TextCapitalization.words,
+                        validator: ViewModel.validateName,
+                        controller: fullNameController,
+                        textInputAction: TextInputAction.next,
+                        decoration: ViewModel.getInputDecoration(
+                            hint: 'Last Name',
+                            darkMode: ViewModel.isDarkMode(context),
+                            errorColor: Theme.of(context).errorColor),
                       ),
-                      Text(widget.user.about,
-                          style: const TextStyle(
-                              color: Colors.black54, fontSize: 15)),
-                    ],
-                  ),
-                ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          top: 16.0, right: 8.0, left: 8.0),
+                      child: TextFormField(
+                        // enabled: enabled,
+                        //Not clickable and not editable
+                        readOnly: readOnly,
+                        keyboardType: TextInputType.phone,
+                        textInputAction: TextInputAction.next,
+                        controller: phoneController,
+                        decoration: ViewModel.getInputDecoration(
+                            hint: 'Phone',
+                            darkMode: ViewModel.isDarkMode(context),
+                            errorColor: Theme.of(context).errorColor),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          top: 16.0, right: 8.0, left: 8.0),
+                      child: TextFormField(
+                        // enabled: enabled,
+                        //Not clickable and not editable
+                        readOnly: readOnly,
+                        keyboardType: TextInputType.text,
+                        textInputAction: TextInputAction.next,
+                        controller: aboutController,
+                        decoration: ViewModel.getInputDecoration(
+                            hint: 'About',
+                            darkMode: ViewModel.isDarkMode(context),
+                            errorColor: Theme.of(context).errorColor),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Text("Comments",
+                        style: const TextStyle(
+                            color: Colors.black87, fontSize: 16)),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: StreamBuilder(
+                        stream:
+                            FireStoreUtils.getAllComments(widget.user.userID),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return SizedBox(
+                              height: 200,
+                              child: Center(
+                                child: Text("No Comments"),
+                              ),
+                            );
+                          }
+
+                          return SizedBox(
+                            height: 200,
+                            child: ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              itemCount: snapshot.data!.docs.length,
+                              itemBuilder: (context, index) {
+                                DocumentSnapshot comment =
+                                    snapshot.data!.docs[index];
+                                return Text(comment['text']);
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          )),
+            /*Expanded(child: GestureDetector(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SocialMe()));
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) => ChatWindow()));
+              },
+            ))*/
+          ])),
     );
+  }
+  // Future<User?> readUser() async {
+  //   final docUser = FirebaseFirestore.instance
+  //       .collection(usersCollection)
+  //       .doc(currentUser?.uid);
+  //   final snapshot = await docUser.get();
+  //   if (snapshot.exists) {
+  //     return User.fromJson(snapshot.data()!);
+  //   }
+  // }
+
+  setControllers(User user) {
+    setState(() {
+      fullNameController.text = user.fullName();
+      emailController.text = user.email;
+      phoneController.text = user.phoneNumber;
+      aboutController.text = user.about;
+      print(user.about);
+      print('HIIIIIIIIIIIIIIIIIIIIIIII');
+    });
+  }
+
+  Future<User?> readUser() async {
+    final docUser = FirebaseFirestore.instance
+        .collection(usersCollection)
+        .doc(widget.user.userID);
+    final snapshot = await docUser.get();
+    if (snapshot.exists) {
+      return User.fromJson(snapshot.data()!);
+    }
   }
 }

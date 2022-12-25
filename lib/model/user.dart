@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
 class User {
@@ -29,6 +30,8 @@ class User {
   String pushToken;
   String about;
   String createdAt;
+  String comment;
+  List<String> commentitem = [];
 
   User(
       {this.email = '',
@@ -37,6 +40,7 @@ class User {
       this.lastActive = '',
       this.createdAt = '',
       this.isOnline = false,
+      this.comment = '',
       this.firstName = '',
       this.lastName = '',
       this.userID = '',
@@ -68,6 +72,7 @@ class User {
       lastActive: parsedJson['last_active'] ?? '',
       pushToken: parsedJson['push_token'] ?? '',
       createdAt: parsedJson['created_at'] ?? '',
+      comment: parsedJson['comment'] ?? '',
     );
   }
 
@@ -89,8 +94,21 @@ class User {
       'created_at': createdAt,
       'last_active': lastActive,
       'push_token': pushToken,
+      'comment': comment,
+      'commentitem': comment,
     };
   }
+
+//   Map<String, dynamic> commentitem(String comment) {
+//     return {
+//       'Comment': FieldValue.arrayUnion([
+//         {
+//           'data': DateTime.now(),
+//           'comment': comment,
+//         }
+//       ])
+//     };
+//   }
 }
 
 // class Messages {

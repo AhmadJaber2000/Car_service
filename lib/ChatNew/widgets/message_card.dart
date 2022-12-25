@@ -11,7 +11,7 @@ import '../models/message.dart';
 class MessageCard extends StatefulWidget {
   const MessageCard({super.key, required this.message});
 
-  final Message message;
+  final MessageChat message;
 
   @override
   State<MessageCard> createState() => _MessageCardState();

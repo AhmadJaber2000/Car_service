@@ -1,19 +1,14 @@
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:Car_service/model/user.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart' as u;
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
-
 import '../../authenticate/service/authenticate.dart';
-import '../../authenticate/signupService/sign_up_bloc.dart';
-import '../../authenticate/signupService/sign_up_event.dart';
 import '../../googlemap/service/location_service.dart';
 import '../../tools/constants.dart';
 import '../../viewmodel/viewModel.dart';

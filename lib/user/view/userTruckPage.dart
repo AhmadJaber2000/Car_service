@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import '../../List_User/ListUserByRate.dart';
 import '../../googlemap/view/roleTypeGoogleMapPage.dart';
 import '../../model/roleType.dart';
+import '../../smarthome/Model/homeinfodata.dart';
+import 'drawer.dart';
 
 class UserTruckPage extends StatefulWidget {
   const UserTruckPage({Key? key}) : super(key: key);
@@ -12,27 +14,52 @@ class UserTruckPage extends StatefulWidget {
   State<UserTruckPage> createState() => _UserTruckPageState();
 }
 
-class _UserTruckPageState extends State<UserTruckPage> {
+class _UserTruckPageState extends State<UserTruckPage>
+    with TickerProviderStateMixin {
+  late TabController _tabController;
+  List<HomeInfoModel> homeInfoData = HomeInfoData().infoData;
+  @override
+  void initState() {
+    _tabController =
+        new TabController(length: homeInfoData.length, vsync: this);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text("What are you looking for ?",
-              style: TextStyle(
-                  color: Colors.cyan,
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold)),
-          const SizedBox(
-            height: 30,
-          ),
-          buildContainer("Mechanics", RoleType.mechanic,
-              "assets/images/car-repair-illustration-concept-vector-fococlipping-standard.png"),
-          buildContainer("Trucks", RoleType.truck,
-              "assets/images/towing-fococlipping-standard.png"),
-        ],
+    final bool isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
+
+    return Scaffold(
+      drawer: const DrawerView(),
+      appBar: (AppBar(
+        brightness: Brightness.light,
+        backgroundColor: Color(0xff004c4c),
+        elevation: 0,
+        title: Text(
+          'Home',
+          style: TextStyle(color: Colors.white),
+        ),
+        centerTitle: true,
+      )),
+      body: Container(
+        color: Color(0xffb2d8d8),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text("What are you looking for ?",
+                style: TextStyle(
+                    color: Color(0xff008080),
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold)),
+            const SizedBox(
+              height: 30,
+            ),
+            buildContainer("Mechanics", RoleType.mechanic,
+                "assets/images/car-repair-illustration-concept-vector-fococlipping-standard.png"),
+            buildContainer("Trucks", RoleType.truck,
+                "assets/images/towing-fococlipping-standard.png"),
+          ],
+        ),
       ),
     );
   }
@@ -44,7 +71,7 @@ class _UserTruckPageState extends State<UserTruckPage> {
       width: double.infinity,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.white, width: 2),
+          border: Border.all(color: Color(0xff006666), width: 2),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.5),
@@ -57,8 +84,8 @@ class _UserTruckPageState extends State<UserTruckPage> {
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
             colors: [
-              Colors.white,
-              Colors.cyan,
+              Color(0xff006666),
+              Color(0xff004c4c),
             ],
           )),
       child: Column(
@@ -100,7 +127,7 @@ class _UserTruckPageState extends State<UserTruckPage> {
                       child: buildChoice(
                           "location",
                           const Icon(
-                            Icons.location_on_sharp,
+                            Icons.location_pin,
                             color: Colors.red,
                           ))),
                 ),
@@ -126,7 +153,7 @@ class _UserTruckPageState extends State<UserTruckPage> {
                             "Popular ${type}",
                             const Icon(
                               Icons.people,
-                              color: Colors.blue,
+                              color: Color(0xff317873),
                             )))),
               ],
             ),
@@ -145,7 +172,7 @@ class _UserTruckPageState extends State<UserTruckPage> {
         children: [
           Text(title,
               style: TextStyle(
-                  color: Colors.cyan,
+                  color: Color(0xff008080),
                   fontSize: 18,
                   fontWeight: FontWeight.bold)),
           icons

@@ -22,7 +22,7 @@ class ChatUserCard extends StatefulWidget {
 
 class _ChatUserCardState extends State<ChatUserCard> {
   //last message info (if null --> no message)
-  Message? _message;
+  MessageChat? _message;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +46,8 @@ class _ChatUserCardState extends State<ChatUserCard> {
             builder: (context, snapshot) {
               final data = snapshot.data?.docs;
               final list =
-                  data?.map((e) => Message.fromJson(e.data())).toList() ?? [];
+                  data?.map((e) => MessageChat.fromJson(e.data())).toList() ??
+                      [];
               if (list.isNotEmpty) _message = list[0];
 
               return ListTile(

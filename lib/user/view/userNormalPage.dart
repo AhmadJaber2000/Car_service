@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../googlemap/service/location_service.dart';
 import '../../model/roleType.dart';
 import '../../model/user.dart';
+import '../../smarthome/Model/homeinfodata.dart';
 import '../../tools/constants.dart';
 import 'drawer.dart';
 import '../../googlemap/view/roleTypeGoogleMapPage.dart';
@@ -15,28 +16,55 @@ class UserNormalPage extends StatefulWidget {
   State<UserNormalPage> createState() => _UserNormalPageState();
 }
 
-class _UserNormalPageState extends State<UserNormalPage> {
+class _UserNormalPageState extends State<UserNormalPage>
+    with TickerProviderStateMixin {
+  late TabController _tabController;
+  List<HomeInfoModel> homeInfoData = HomeInfoData().infoData;
+
+  @override
+  void initState() {
+    _tabController =
+        new TabController(length: homeInfoData.length, vsync: this);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text("What are you looking for ?",
-              style: TextStyle(
-                  color: Colors.cyan,
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold)),
-          const SizedBox(
-            height: 30,
-          ),
-          buildContainer("Mechanics", RoleType.mechanic,
-              "assets/images/car-repair-illustration-concept-vector-fococlipping-standard.png"),
-          buildContainer("Trucks", RoleType.truck,
-              "assets/images/towing-fococlipping-standard.png"),
-        ],
+    final bool isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
+
+    return Scaffold(
+      drawer: const DrawerView(),
+      appBar: (AppBar(
+        brightness: Brightness.light,
+        backgroundColor: Color(0xff004c4c),
+        elevation: 0,
+        title: Text(
+          'Home',
+          style: TextStyle(color: Colors.white),
+        ),
+        centerTitle: true,
+      )),
+      body: Container(
+        color: Color(0xffb2d8d8),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text("What are you looking for ?",
+                style: TextStyle(
+                    color: Color(0xff008080),
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold)),
+            const SizedBox(
+              height: 30,
+            ),
+            buildContainer("Mechanics", RoleType.mechanic,
+                "assets/images/car-repair-illustration-concept-vector-fococlipping-standard.png"),
+            buildContainer("Trucks", RoleType.truck,
+                "assets/images/towing-fococlipping-standard.png"),
+          ],
+        ),
       ),
+      backgroundColor: Color(0xffb2d8d8),
     );
   }
 
@@ -47,7 +75,7 @@ class _UserNormalPageState extends State<UserNormalPage> {
       width: double.infinity,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.white, width: 2),
+          border: Border.all(color: Color(0xff006666), width: 2),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.5),
@@ -60,8 +88,8 @@ class _UserNormalPageState extends State<UserNormalPage> {
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
             colors: [
-              Colors.white,
-              Colors.cyan,
+              Color(0xff006666),
+              Color(0xff004c4c),
             ],
           )),
       child: Column(
@@ -103,7 +131,7 @@ class _UserNormalPageState extends State<UserNormalPage> {
                       child: buildChoice(
                           "location",
                           const Icon(
-                            Icons.location_on_sharp,
+                            Icons.location_pin,
                             color: Colors.red,
                           ))),
                 ),
@@ -122,7 +150,7 @@ class _UserNormalPageState extends State<UserNormalPage> {
                             "Popular${type}",
                             const Icon(
                               Icons.people,
-                              color: Color(0xff326ada),
+                              color: Color(0xff317873),
                             )))),
               ],
             ),
@@ -141,7 +169,7 @@ class _UserNormalPageState extends State<UserNormalPage> {
         children: [
           Text(title,
               style: TextStyle(
-                  color: Colors.cyan,
+                  color: Color(0xff008080),
                   fontSize: 18,
                   fontWeight: FontWeight.bold)),
           icons

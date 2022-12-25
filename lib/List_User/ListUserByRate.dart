@@ -1,6 +1,7 @@
 import 'package:Car_service/ChatIn/api/apis.dart';
 import 'package:Car_service/ChatIn/screens/home_screen.dart';
 import 'package:Car_service/ChatNew/screens/chat_screen.dart';
+import 'package:Car_service/ChatNew/screens/view_profile_screen.dart';
 import 'package:Car_service/authenticate/service/authenticate.dart';
 import 'package:Car_service/model/roleType.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -24,10 +25,23 @@ class ListMechanicByRate extends StatefulWidget {
 }
 
 class _ListMechanicByRateState extends State<ListMechanicByRate> {
+  TextEditingController commentController = TextEditingController();
+  String comment = '';
+  TextEditingController commentitemcontroller = TextEditingController();
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  final TextEditingController _commentController = TextEditingController();
+
   List<User> user = [];
   @override
   void initState() {
     super.initState();
+  }
+
+  setControllers(User user) {
+    setState(() {
+      commentController.text = user.comment;
+    });
   }
 
   function() async {
@@ -38,20 +52,22 @@ class _ListMechanicByRateState extends State<ListMechanicByRate> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xffb2d8d8),
       appBar: AppBar(
         title: Text(
           'List By Rate',
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
-        backgroundColor: primecolor,
+        backgroundColor: Color(0xff004c4c),
       ),
       body: FutureBuilder(
-          future: FireStoreUtils.getMarchantsLocation(widget.roletype),
+          future: FireStoreUtils.getAllUserRole(widget.roletype),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
-              return Text("Something has erorr");
+              return Center(
+                child: Text("No Users"),
+              );
             } else if (snapshot.hasData) {
               final users = snapshot.data!;
               if (widget.roletype == "Truck") {
@@ -81,7 +97,7 @@ class _ListMechanicByRateState extends State<ListMechanicByRate> {
       width: double.infinity,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.white, width: 2),
+          border: Border.all(color: Color(0xff006666), width: 2),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.5),
@@ -94,34 +110,40 @@ class _ListMechanicByRateState extends State<ListMechanicByRate> {
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
             colors: [
-              Colors.white,
-              Colors.cyan,
+              Color(0xff006666),
+              Color(0xff004c4c),
             ],
           )),
       child: Column(children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(user.fullName(),
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold)),
+            GestureDetector(
+              child: Text(user.fullName(),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold)),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ViewProfileScreen(
+                              user: user,
+                            )));
+                print("Hi");
+              },
+            ),
             const SizedBox(
               height: 20,
             ),
-            const Icon(
-              Icons.add_call,
-              color: Colors.cyan,
-              size: 20,
-            ),
             const SizedBox(
-              width: 20,
+              width: 15,
             ),
             Text(" Rate : ${user.rate}",
                 style: TextStyle(
-                    color: Colors.cyan,
-                    fontSize: 30,
+                    color: Colors.white,
+                    fontSize: 25,
                     fontWeight: FontWeight.bold))
             // Image.asset(
             //   user.email,
@@ -148,7 +170,7 @@ class _ListMechanicByRateState extends State<ListMechanicByRate> {
                     child: buildChoice(
                         "location",
                         const Icon(
-                          Icons.location_on_sharp,
+                          Icons.location_pin,
                           color: Colors.red,
                         ))),
               ),
@@ -168,8 +190,100 @@ class _ListMechanicByRateState extends State<ListMechanicByRate> {
                           "Chat",
                           const Icon(
                             Icons.chat,
-                            color: Color(0xff326ada),
+                            color: Color(0xff317873),
                           )))),
+              Expanded(
+                child: GestureDetector(
+                    onTap: () {
+                      RateMyApp _rateMyApp = RateMyApp(
+                        preferencesPrefix: 'Rate This User',
+                        minDays: 3,
+                        minLaunches: 7,
+                        remindDays: 2,
+                        remindLaunches: 5,
+                      );
+                      _rateMyApp.init().then((_) {
+                        // if (_rateMyApp.shouldOpenDialog) {
+                        _rateMyApp.showStarRateDialog(
+                          context,
+                          title: 'Enjoying Flutter Rating Prompt?',
+                          message: 'Please leave a rating!',
+                          actionsBuilder: (context, stars) {
+                            return [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: TextField(
+                                  controller: _commentController,
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter a comment',
+                                  ),
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  ElevatedButton(
+                                    child: Text('Send'),
+                                    onPressed: () async {
+                                      double? star = stars;
+                                      await firestore
+                                          .collection('comments')
+                                          .add({
+                                        'text': _commentController.text,
+                                        'userId': user.userID,
+                                        'timestamp':
+                                            FieldValue.serverTimestamp(),
+                                      });
+                                      _commentController.clear();
+
+                                      User userd = User();
+                                      Future<User?> updateUser() async {
+                                        print("update");
+                                        setState(() {
+                                          user.rate = stars!;
+                                        });
+                                        print(user.rate);
+                                        print(user.commentitem);
+                                        await FireStoreUtils.updateCurrentUser(
+                                            user);
+                                      }
+
+                                      setState(() {
+                                        updateUser();
+                                      });
+
+                                      Navigator.pop(context);
+                                      commentController.clear();
+                                    },
+                                  ),
+                                ],
+                              )
+                            ];
+                          },
+                          dialogStyle: DialogStyle(
+                            titleAlign: TextAlign.center,
+                            messageAlign: TextAlign.center,
+                            messagePadding: EdgeInsets.only(bottom: 20.0),
+                          ),
+                          starRatingOptions: StarRatingOptions(),
+                        );
+                        // }
+                      });
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => RoleTypeGoogleMapPage(
+                      //               userType: user.roletype,
+                      //               service: "location",
+                      //               roleType: user.roletype,
+                      //             )));
+                    },
+                    child: buildChoice(
+                        "Rate",
+                        const Icon(
+                          Icons.star_rate,
+                          color: Color(0xff317873),
+                        ))),
+              ),
             ],
           ),
         ),
@@ -186,7 +300,7 @@ class _ListMechanicByRateState extends State<ListMechanicByRate> {
         children: [
           Text(title,
               style: TextStyle(
-                  color: Colors.cyan,
+                  color: Color(0xff008080),
                   fontSize: 18,
                   fontWeight: FontWeight.bold)),
           icons
