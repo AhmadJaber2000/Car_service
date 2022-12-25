@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 
 import '../../components/Constants.dart';
 import '../../components/cardbtn.dart';
+import '../Analytic.dart';
 
 class AdminRole extends StatelessWidget {
   const AdminRole({Key? key}) : super(key: key);
@@ -68,7 +69,10 @@ class AdminRole extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: () => {
-                      //do smthing
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => commentMange()))
                     },
                     child: const cardbtn(
                       txt: "Analytics",

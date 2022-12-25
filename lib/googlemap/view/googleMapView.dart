@@ -7,6 +7,7 @@ import 'package:Car_service/ChatIn/screens/chat_screen.dart';
 import 'package:Car_service/ChatIn/screens/home_screen.dart';
 import 'package:Car_service/ChatNew/screens/chat_screen.dart';
 import 'package:Car_service/authenticate/service/authenticate.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -126,6 +127,9 @@ class _GoogleMapViewState extends State<GoogleMapView> {
 
   //variables:
   bool isLoading = false;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  final TextEditingController _commentController = TextEditingController();
 
   setMarkers() {
     for (User user in users) {
@@ -302,31 +306,71 @@ class _GoogleMapViewState extends State<GoogleMapView> {
                                                 actionsBuilder:
                                                     (context, stars) {
                                                   return [
-                                                    ElevatedButton(
-                                                      child: Text('Ok'),
-                                                      onPressed: () async {
-                                                        double? star = stars;
-                                                        print(star);
-                                                        User userd = User();
-                                                        Future<User?>
-                                                            updateUser() async {
-                                                          print("update");
-                                                          setState(() {
-                                                            user.rate = stars!;
-                                                          });
-                                                          print(user.rate);
-                                                          await FireStoreUtils
-                                                              .updateCurrentUser(
-                                                                  user);
-                                                        }
-
-                                                        setState(() {
-                                                          updateUser();
-                                                        });
-
-                                                        Navigator.pop(context);
-                                                      },
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: TextField(
+                                                        controller:
+                                                            _commentController,
+                                                        decoration:
+                                                            InputDecoration(
+                                                          hintText:
+                                                              'Enter a comment',
+                                                        ),
+                                                      ),
                                                     ),
+                                                    Row(
+                                                      children: [
+                                                        ElevatedButton(
+                                                          child: Text('Send'),
+                                                          onPressed: () async {
+                                                            double? star =
+                                                                stars;
+                                                            await firestore
+                                                                .collection(
+                                                                    'comments')
+                                                                .add({
+                                                              'text':
+                                                                  _commentController
+                                                                      .text,
+                                                              'userId':
+                                                                  user.userID,
+                                                              'timestamp':
+                                                                  FieldValue
+                                                                      .serverTimestamp(),
+                                                            });
+                                                            _commentController
+                                                                .clear();
+
+                                                            User userd = User();
+                                                            Future<User?>
+                                                                updateUser() async {
+                                                              print("update");
+                                                              setState(() {
+                                                                user.rate =
+                                                                    stars!;
+                                                              });
+                                                              print(user.rate);
+                                                              print(user
+                                                                  .commentitem);
+                                                              await FireStoreUtils
+                                                                  .updateCurrentUser(
+                                                                      user);
+                                                            }
+
+                                                            setState(() {
+                                                              updateUser();
+                                                            });
+
+                                                            Navigator.pop(
+                                                                context);
+                                                            _commentController
+                                                                .clear();
+                                                          },
+                                                        ),
+                                                      ],
+                                                    )
                                                   ];
                                                 },
                                                 dialogStyle: DialogStyle(
@@ -355,9 +399,9 @@ class _GoogleMapViewState extends State<GoogleMapView> {
                                               "Rate",
                                               const Icon(
                                                 Icons.star_rate,
-                                                color: Colors.amber,
+                                                color: Color(0xff317873),
                                               ))),
-                                    ),
+                                    )
                                   ],
                                 ),
                               ),

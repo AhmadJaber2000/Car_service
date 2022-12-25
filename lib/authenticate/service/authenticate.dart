@@ -617,4 +617,35 @@ class FireStoreUtils {
     }
     return users;
   }
+
+  // static Future<List<User>> getAllUserForAdmin() async {
+  //   List<User> users = [];
+  //
+  //   QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+  //       .instance
+  //       .collection(usersCollection)
+  //       .where('id', isNotEqualTo: user!.uid)
+  //       .where('roletype', isEqualTo: 'Admin')
+  //       .get();
+  //
+  //   print("LENGTH getMarchantsLocation ${querySnapshot.docs.length}");
+  //   for (int i = 0; i < querySnapshot.docs.length; i++) {
+  //     var a = querySnapshot.docs[i];
+  //     print("rate ${a.get("rate")}");
+  //     users.add(await User(
+  //         firstName: a.get("firstName"),
+  //         lastName: a.get("lastName"),
+  //         email: a.get("email"),
+  //         lat: a.get("lat"),
+  //         long: a.get("long"),
+  //         roletype: a.get("roletype"),
+  //         rate: a.get("rate"),
+  //         phoneNumber: a.get('phoneNumber'),
+  //         userID: a.get('id')));
+  //   }
+  //   return users;
+  // }
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getAllCommentForAdmin() {
+    return firestore.collection('comments').snapshots();
+  }
 }
