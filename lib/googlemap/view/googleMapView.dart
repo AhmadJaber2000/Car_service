@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:Car_service/ChatIn/screens/chat_screen.dart';
 import 'package:Car_service/ChatIn/screens/home_screen.dart';
+import 'package:Car_service/ChatNew/screens/chat_screen.dart';
 import 'package:Car_service/authenticate/service/authenticate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -270,7 +271,8 @@ class _GoogleMapViewState extends State<GoogleMapView> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          ChatWindow()));
+                                                          ChatScreen(
+                                                              user: user)));
                                             },
                                             child: buildChoice(
                                                 "Chat",
