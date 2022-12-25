@@ -78,7 +78,7 @@ dependencies:
   flutter_launcher_icons:
   line_icons:
   dotted_border:
-
+  contactus: ^1.2.0
 
 
 

@@ -1,11 +1,13 @@
 import 'dart:math';
 import 'package:Car_service/ChatNew/screens/home_screen.dart';
+import 'package:Car_service/ContactUs/ContactUs.dart';
 import 'package:Car_service/authenticate/service/authenticate.dart';
 import 'package:Car_service/authenticate/view/login_screen.dart';
 import 'package:Car_service/tools/constants.dart';
 import 'package:Car_service/user/view/editProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../ChatNew/screens/chat_screen.dart';
 import '../../RateThisApp/main.dart';
 import '../../authenticate/service/authentication_bloc.dart';
 import '../../viewmodel/viewmodel.dart';
@@ -118,7 +120,8 @@ class _DrawerViewState extends State<DrawerView> {
                 ),
               ),
               onTap: () {
-                // Navigator.push(context, MaterialPageRoute(builder: (context)=>ChatScreen()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ContactPage()));
               },
             ),
             SizedBox(

@@ -498,7 +498,6 @@ class FireStoreUtils {
   }
 
   ///************** Chat Screen Related APIs **************
-
   // chats (collection) --> conversation_id (doc) --> messages (collection) --> message (doc)
 
   // useful for getting conversation id
@@ -598,6 +597,7 @@ class FireStoreUtils {
         .collection(usersCollection)
         .where('id', isNotEqualTo: user!.uid)
         .where('roletype', isEqualTo: type)
+        .where('rate', isGreaterThanOrEqualTo: 3.0)
         .orderBy('rate', descending: true)
         .get();
 
