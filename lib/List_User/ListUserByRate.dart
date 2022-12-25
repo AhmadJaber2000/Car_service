@@ -225,14 +225,8 @@ class _ListMechanicByRateState extends State<ListMechanicByRate> {
                                     child: Text('Send'),
                                     onPressed: () async {
                                       double? star = stars;
-                                      await firestore
-                                          .collection('comments')
-                                          .add({
-                                        'text': _commentController.text,
-                                        'userId': user.userID,
-                                        'timestamp':
-                                            FieldValue.serverTimestamp(),
-                                      });
+                                      FireStoreUtils.sendCommentForuser(
+                                          _commentController.text, user.userID);
                                       _commentController.clear();
 
                                       User userd = User();

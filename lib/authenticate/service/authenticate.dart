@@ -598,6 +598,7 @@ class FireStoreUtils {
         .collection(usersCollection)
         .where('id', isNotEqualTo: user!.uid)
         .where('roletype', isEqualTo: type)
+        .orderBy('rate', descending: true)
         .get();
 
     print("LENGTH getMarchantsLocation ${querySnapshot.docs.length}");
@@ -647,5 +648,17 @@ class FireStoreUtils {
   // }
   static Stream<QuerySnapshot<Map<String, dynamic>>> getAllCommentForAdmin() {
     return firestore.collection('comments').snapshots();
+  }
+
+  static Future<DocumentReference<Map<String, dynamic>>> sendCommentForuser(
+    String comment,
+    String uid,
+  ) {
+    return firestore.collection('comments').add({
+      'UserName': me.firstName,
+      'text': comment,
+      'userId': uid,
+      'timestamp': FieldValue.serverTimestamp(),
+    });
   }
 }
