@@ -34,7 +34,7 @@ class WelcomeScreen extends StatelessWidget {
                 children: <Widget>[
                   Center(
                     child: Image.asset(
-                      'assets/images/carservice.png',
+                      'assets/images/img.png',
                       width: 150.0,
                       height: 150.0,
                       fit: BoxFit.cover,

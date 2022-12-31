@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:Car_service/authenticate/service/authenticate.dart';
 import 'package:Car_service/tools/constants.dart';
+import 'package:Car_service/user/view/editProfile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -125,11 +126,8 @@ class _ChatWindowState extends State<ChatWindow> {
               //more features button
               IconButton(
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) =>
-                                ProfileScreen(user: FireStoreUtils.me)));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => EditProfile()));
                   },
                   icon: const Icon(Icons.more_vert))
             ],

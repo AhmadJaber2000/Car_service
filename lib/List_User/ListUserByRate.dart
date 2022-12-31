@@ -1,18 +1,16 @@
-import 'package:Car_service/ChatIn/api/apis.dart';
-import 'package:Car_service/ChatIn/screens/home_screen.dart';
+import 'dart:ffi';
+
 import 'package:Car_service/ChatNew/screens/chat_screen.dart';
 import 'package:Car_service/ChatNew/screens/view_profile_screen.dart';
 import 'package:Car_service/authenticate/service/authenticate.dart';
-import 'package:Car_service/model/roleType.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:rate_my_app/rate_my_app.dart';
-import '../ChatNew/screens/home_screen.dart';
 import '../googlemap/view/roleTypeGoogleMapPage.dart';
 import '../model/user.dart';
 import 'package:firebase_auth/firebase_auth.dart' as path;
+import '../startpoint/GlobalVar.dart';
 import '../tools/constants.dart';
 
 class ListMechanicByRate extends StatefulWidget {
@@ -33,15 +31,16 @@ class _ListMechanicByRateState extends State<ListMechanicByRate> {
   final TextEditingController _commentController = TextEditingController();
 
   List<User> user = [];
+  final String useruid = path.FirebaseAuth.instance.currentUser!.uid;
+
   @override
   void initState() {
     super.initState();
+    print(useruid);
   }
 
   setControllers(User user) {
-    setState(() {
-      commentController.text = user.comment;
-    });
+    setState(() {});
   }
 
   function() async {
@@ -62,7 +61,7 @@ class _ListMechanicByRateState extends State<ListMechanicByRate> {
         backgroundColor: Color(0xff004c4c),
       ),
       body: FutureBuilder(
-          future: FireStoreUtils.getAllUserRole(widget.roletype),
+          future: FireStoreUtils.getAllUserRole(widget.roletype, useruid),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return Center(
@@ -140,7 +139,7 @@ class _ListMechanicByRateState extends State<ListMechanicByRate> {
             const SizedBox(
               width: 15,
             ),
-            Text(" Rate : ${user.rate}",
+            Text(" Rate : ${user.rate.toStringAsFixed(2)}",
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 25,
@@ -194,7 +193,15 @@ class _ListMechanicByRateState extends State<ListMechanicByRate> {
                           )))),
               Expanded(
                 child: GestureDetector(
-                    onTap: () {
+                    onTap: () async {
+                      // FireStoreUtils.getUserInfo(user);
+                      // await FirebaseFirestore.instance
+                      //     .collection(usersCollection)
+                      //     .doc(user.userID)
+                      //     .update({"rateCount": FieldValue.increment(1)});
+                      counter++;
+                      print(counter);
+
                       RateMyApp _rateMyApp = RateMyApp(
                         preferencesPrefix: 'Rate This User',
                         minDays: 3,
@@ -222,21 +229,38 @@ class _ListMechanicByRateState extends State<ListMechanicByRate> {
                               Row(
                                 children: [
                                   ElevatedButton(
-                                    child: Text('Send'),
+                                    child: Text('OK'),
                                     onPressed: () async {
                                       double? star = stars;
                                       FireStoreUtils.sendCommentForuser(
                                           _commentController.text, user.userID);
                                       _commentController.clear();
+                                      FirebaseFirestore.instance
+                                          .collection(usersCollection)
+                                          .doc(user.userID)
+                                          .update({
+                                            'rateSum': stars
+                                          }) // <-- Updated data
+                                          .then((_) => print('Success'))
+                                          .catchError((error) =>
+                                              print('Failed: $error'));
+
+                                      SumOfRate += star!;
+                                      print(SumOfRate);
+                                      print(
+                                          'HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII');
 
                                       User userd = User();
+                                      double avg = SumOfRate / counter;
+                                      print(
+                                          'HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII');
+                                      print(avg);
                                       Future<User?> updateUser() async {
                                         print("update");
                                         setState(() {
-                                          user.rate = stars!;
+                                          user.rate = avg;
                                         });
-                                        print(user.rate);
-                                        print(user.commentitem);
+                                        print(user.rateSum);
                                         await FireStoreUtils.updateCurrentUser(
                                             user);
                                       }
@@ -249,6 +273,25 @@ class _ListMechanicByRateState extends State<ListMechanicByRate> {
                                       commentController.clear();
                                     },
                                   ),
+                                  // ElevatedButton(
+                                  //   child: Text('Send'),
+                                  //   onPressed: () async {
+                                  //     double? star = stars;
+                                  //     FireStoreUtils.sendCommentForuser(
+                                  //         _commentController.text, user.userID);
+                                  //     setState(() async {
+                                  //       await FirebaseFirestore.instance
+                                  //           .collection(usersCollection)
+                                  //           .doc(user.userID)
+                                  //           .update({
+                                  //         "rateSum": FieldValue.increment(star!)
+                                  //       });
+                                  //     });
+                                  //
+                                  //     _commentController.clear();
+                                  //     Navigator.pop(context);
+                                  //   },
+                                  // ),
                                 ],
                               )
                             ];

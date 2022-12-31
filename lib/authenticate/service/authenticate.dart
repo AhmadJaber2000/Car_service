@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:Car_service/model/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -163,14 +164,6 @@ class FireStoreUtils {
     return users;
   }
 
-  getUser() async {
-    QuerySnapshot snapshot =
-        await usercol.where('roletype', isEqualTo: 'Mechanic').get();
-    snapshot.docs.forEach((DocumentSnapshot doc) {
-      print(doc.data());
-    });
-  }
-
   static loginWithFacebook() async {
     FacebookAuth facebookAuth = FacebookAuth.instance;
     bool isLogged = await facebookAuth.accessToken != null;
@@ -267,7 +260,7 @@ class FireStoreUtils {
           createdAt: DateTime.now().toString(),
           lat: lat!,
           long: long!,
-          rate: rate!,
+          rate: 0,
           phoneNumber: phonenumber!,
           profilePictureURL: profilePicUrl);
 
@@ -449,14 +442,6 @@ class FireStoreUtils {
         .snapshots();
   }
 
-  // for updating user information
-  // static Future<void> updateUserInfo() async {
-  //   await firestore.collection('users').doc(user.uid).update({
-  //     'name': me.name,
-  //     'about': me.about,
-  //   });
-  // }
-
   // update profile picture of user
   static Future<void> updateProfilePicture(File file) async {
     //getting image file extension
@@ -579,28 +564,65 @@ class FireStoreUtils {
         .snapshots();
   }
 
-  // static Future<List<QuerySnapshot<Map<String, dynamic>>>> getAllUserRoletype(
-  //     String Role) {
-  //   return firestore
-  //       .collection('User')
-  //       .where('id', isNotEqualTo: user!.uid)
-  //       .where('roletype', isEqualTo: Role)
-  //       .snapshots()
-  //       .toList();
-  // }
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getInfoCheckBox(
+      String userId) {
+    return firestore
+        .collection('checkbox')
+        .where('userId', isEqualTo: userId)
+        .snapshots();
+  }
 
-  static Future<List<User>> getAllUserRole(String type) async {
+  static Future<List<User>> getAllUserRole(String type, String uid) async {
     List<User> users = [];
+    print(uid);
     print("type $type");
-    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
-        .instance
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
         .collection(usersCollection)
-        .where('id', isNotEqualTo: user!.uid)
+        // .where('rate', isGreaterThanOrEqualTo: 2)
         .where('roletype', isEqualTo: type)
-        .where('rate', isGreaterThanOrEqualTo: 3.0)
-        .orderBy('rate', descending: true)
+        .where('id', isNotEqualTo: uid)
         .get();
 
+    print("LENGTH ${querySnapshot.docs.length}");
+    for (int i = 0; i < querySnapshot.docs.length; i++) {
+      var a = querySnapshot.docs[i];
+      print("rate ${a.get("rate")}");
+      users.add(await User(
+          firstName: a.get("firstName"),
+          lastName: a.get("lastName"),
+          email: a.get("email"),
+          lat: a.get("lat"),
+          long: a.get("long"),
+          roletype: a.get("roletype"),
+          rate: a.get("rate"),
+          phoneNumber: a.get('phoneNumber'),
+          userID: a.get('id')));
+    }
+    return users;
+  }
+
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getAllCommentForAdmin() {
+    return firestore.collection('comments').snapshots();
+  }
+
+  static Future<DocumentReference<Map<String, dynamic>>> sendCommentForuser(
+    String comment,
+    String uid,
+  ) {
+    return firestore.collection('comments').add({
+      'UserName': user!.email,
+      'text': comment,
+      'userId': uid,
+      'timestamp': FieldValue.serverTimestamp(),
+    });
+  }
+
+  static Future<List<User>> getCurrentUserInfo(String uid) async {
+    List<User> users = [];
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection(usersCollection)
+        .where('id', isEqualTo: user!.uid)
+        .get();
     print("LENGTH getMarchantsLocation ${querySnapshot.docs.length}");
     for (int i = 0; i < querySnapshot.docs.length; i++) {
       var a = querySnapshot.docs[i];
@@ -619,46 +641,9 @@ class FireStoreUtils {
     return users;
   }
 
-  // static Future<List<User>> getAllUserForAdmin() async {
-  //   List<User> users = [];
-  //
-  //   QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
-  //       .instance
-  //       .collection(usersCollection)
-  //       .where('id', isNotEqualTo: user!.uid)
-  //       .where('roletype', isEqualTo: 'Admin')
-  //       .get();
-  //
-  //   print("LENGTH getMarchantsLocation ${querySnapshot.docs.length}");
-  //   for (int i = 0; i < querySnapshot.docs.length; i++) {
-  //     var a = querySnapshot.docs[i];
-  //     print("rate ${a.get("rate")}");
-  //     users.add(await User(
-  //         firstName: a.get("firstName"),
-  //         lastName: a.get("lastName"),
-  //         email: a.get("email"),
-  //         lat: a.get("lat"),
-  //         long: a.get("long"),
-  //         roletype: a.get("roletype"),
-  //         rate: a.get("rate"),
-  //         phoneNumber: a.get('phoneNumber'),
-  //         userID: a.get('id')));
-  //   }
-  //   return users;
-  // }
-  static Stream<QuerySnapshot<Map<String, dynamic>>> getAllCommentForAdmin() {
-    return firestore.collection('comments').snapshots();
-  }
-
-  static Future<DocumentReference<Map<String, dynamic>>> sendCommentForuser(
-    String comment,
-    String uid,
-  ) {
-    return firestore.collection('comments').add({
-      'UserName': me.firstName,
-      'text': comment,
-      'userId': uid,
-      'timestamp': FieldValue.serverTimestamp(),
+  static Future<void> updateAvailablestate(bool isOnline) async {
+    firestore.collection('User').doc(user!.uid).update({
+      'activestate': isOnline,
     });
   }
 }

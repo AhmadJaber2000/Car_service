@@ -7,9 +7,9 @@ import 'package:Car_service/tools/constants.dart';
 import 'package:Car_service/user/view/editProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../ChatNew/screens/chat_screen.dart';
 import '../../RateThisApp/main.dart';
 import '../../authenticate/service/authentication_bloc.dart';
+import '../../checkbox/main.dart';
 import '../../viewmodel/viewmodel.dart';
 import '../../welcome/welcome_screen.dart';
 
@@ -146,40 +146,6 @@ class _DrawerViewState extends State<DrawerView> {
                 FireStoreUtils.updateActiveStatus(false);
               },
             ),
-            // ListTile(
-            //   title: const Text(
-            //     'List',
-            //     style: TextStyle(color: Colors.cyan),
-            //   ),
-            //   leading: Transform.rotate(
-            //     angle: pi / 1,
-            //     child: Icon(
-            //       Icons.exit_to_app,
-            //       color: Theme.of(context).primaryColorLight,
-            //     ),
-            //   ),
-            //   onTap: () {
-            //     Navigator.push(context,
-            //         MaterialPageRoute(builder: (context) => CommentHomeScreen()));
-            //   },
-            // ),
-            // ListTile(
-            //   title: const Text(
-            //     'button',
-            //     style: TextStyle(color: Colors.cyan),
-            //   ),
-            //   leading: Transform.rotate(
-            //     angle: pi / 150,
-            //     child: Icon(
-            //       Icons.person,
-            //       color: Theme.of(context).primaryColorLight,
-            //     ),
-            //   ),
-            //   onTap: () {
-            //     Navigator.push(context,
-            //         MaterialPageRoute(builder: (context) => ChatWindow()));
-            //   },
-            // ),
           ],
         ),
       ),

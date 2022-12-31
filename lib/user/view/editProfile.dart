@@ -9,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart' as u;
 import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
 import '../../authenticate/service/authenticate.dart';
+import '../../checkbox/main.dart';
 import '../../googlemap/service/location_service.dart';
 import '../../tools/constants.dart';
 import '../../viewmodel/viewModel.dart';
@@ -27,12 +28,42 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController phoneController = TextEditingController();
   TextEditingController aboutController = TextEditingController();
   User user = User();
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
   bool enabled = false; //Not clickable and not editable
   bool readOnly = true;
   String title = 'Edit';
   late LocationData location;
   double? lat, long;
-
+  List<String> items = [
+    '8:00AM-10:00AM',
+    '10:00AM-12:00PM',
+    '12:00PM-2:00PM',
+    '2:00PM-4:00PM',
+    '4:00PM-6:00PM',
+    '6:00PM-8:00PM',
+    'Japanese Cars',
+    'Korean Cars',
+    'American Cars',
+    'Germany Cars',
+    'Diesel',
+    'petrol',
+    'hybrid',
+  ];
+  List<IconData> itemsCheck = [
+    Icons.check_circle_outline,
+    Icons.check_circle_outline,
+    Icons.check_circle_outline,
+    Icons.check_circle_outline,
+    Icons.check_circle_outline,
+    Icons.check_circle_outline,
+    Icons.check_circle_outline,
+    Icons.check_circle_outline,
+    Icons.check_circle_outline,
+    Icons.check_circle_outline,
+    Icons.check_circle_outline,
+    Icons.check_circle_outline,
+    Icons.check_circle_outline
+  ];
   @override
   void initState() {
     // TODO: implement initState
@@ -50,7 +81,7 @@ class _EditProfileState extends State<EditProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColorLight,
+        backgroundColor: Colors.black,
         title: const Text("Profile"),
         centerTitle: true,
         actions: [
@@ -100,6 +131,8 @@ class _EditProfileState extends State<EditProfile> {
   u.User? currentUser = u.FirebaseAuth.instance.currentUser;
   final GlobalKey<FormState> _key = GlobalKey();
   AutovalidateMode _validate = AutovalidateMode.disabled;
+  bool _lights = false;
+  // String Title = _lights ? "Active" : "Not Active";
 
   Widget buildUser(User user) {
     Size mq = MediaQuery.of(context).size;
@@ -158,129 +191,313 @@ class _EditProfileState extends State<EditProfile> {
                   )
                 ],
               ),
+              SizedBox(
+                height: 25,
+              ),
+              if (user.roletype == "Mechanic" || user.roletype == "Truck")
+                SwitchListTile(
+                  value: _lights,
+                  onChanged: (bool value) {
+                    setState(() {
+                      _lights = value;
+                      title;
+                    });
+                    FireStoreUtils.updateAvailablestate(value);
+                  },
+                  activeColor: Colors.green,
+                  title: Text(
+                    'Active Status',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  activeTrackColor: Colors.green,
+                  secondary: Icon(
+                    Icons.offline_pin,
+                  ),
+                ),
               Padding(
-                padding:
-                    const EdgeInsets.only(top: 16.0, right: 8.0, left: 8.0),
+                padding: EdgeInsetsDirectional.fromSTEB(20, 0, 20, 12),
                 child: TextFormField(
-                  enabled: enabled,
                   //Not clickable and not editable
                   readOnly: readOnly,
-                  textCapitalization: TextCapitalization.words,
                   controller: firstnameController,
-                  validator: ViewModel.validateName,
-                  textInputAction: TextInputAction.next,
-                  decoration: ViewModel.getInputDecoration(
-                      hint: 'First Name',
-                      darkMode: ViewModel.isDarkMode(context),
-                      errorColor: Theme.of(context).errorColor),
+                  obscureText: false,
+                  decoration: InputDecoration(
+                    labelText: 'First Name',
+                    labelStyle: TextStyle(color: Colors.black),
+                    hintText: 'Your Name',
+                    hintStyle: TextStyle(color: Colors.cyan),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.black,
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0xff008080),
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0x00000000),
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0x00000000),
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                    contentPadding:
+                        EdgeInsetsDirectional.fromSTEB(20, 24, 0, 24),
+                  ),
+                  style: TextStyle(color: Colors.black),
                 ),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.only(top: 16.0, right: 8.0, left: 8.0),
+                padding: EdgeInsetsDirectional.fromSTEB(20, 0, 20, 12),
                 child: TextFormField(
-                  enabled: enabled,
                   //Not clickable and not editable
                   readOnly: readOnly,
-                  textCapitalization: TextCapitalization.words,
-                  validator: ViewModel.validateName,
                   controller: lastnameController,
-                  textInputAction: TextInputAction.next,
-                  decoration: ViewModel.getInputDecoration(
-                      hint: 'Last Name',
-                      darkMode: ViewModel.isDarkMode(context),
-                      errorColor: Theme.of(context).errorColor),
+                  obscureText: false,
+                  decoration: InputDecoration(
+                    labelText: 'Last Name',
+                    labelStyle: TextStyle(color: Colors.black),
+                    hintText: 'Your Name',
+                    hintStyle: TextStyle(color: Colors.cyan),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.black,
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0xff008080),
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0x00000000),
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0x00000000),
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                    contentPadding:
+                        EdgeInsetsDirectional.fromSTEB(20, 24, 0, 24),
+                  ),
+                  style: TextStyle(color: Colors.black),
                 ),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.only(top: 16.0, right: 8.0, left: 8.0),
+                padding: EdgeInsetsDirectional.fromSTEB(20, 0, 20, 12),
                 child: TextFormField(
-                  enabled: enabled,
                   //Not clickable and not editable
                   readOnly: !readOnly,
-                  keyboardType: TextInputType.emailAddress,
-                  textInputAction: TextInputAction.next,
                   controller: emailController,
-                  validator: ViewModel.validateEmail,
-
-                  decoration: ViewModel.getInputDecoration(
-                      hint: 'Email',
-                      darkMode: ViewModel.isDarkMode(context),
-                      errorColor: Theme.of(context).errorColor),
+                  obscureText: false,
+                  decoration: InputDecoration(
+                    labelText: 'Email Address',
+                    labelStyle: TextStyle(color: Colors.black),
+                    hintText: 'Your email..',
+                    hintStyle: TextStyle(color: Colors.blue),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.black,
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: black,
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0x00000000),
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0x00000000),
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                    contentPadding:
+                        EdgeInsetsDirectional.fromSTEB(20, 24, 0, 24),
+                  ),
+                  style: TextStyle(color: Colors.black),
                 ),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.only(top: 16.0, right: 8.0, left: 8.0),
+                padding: EdgeInsetsDirectional.fromSTEB(20, 0, 20, 12),
                 child: TextFormField(
-                  enabled: enabled,
                   //Not clickable and not editable
                   readOnly: readOnly,
-                  keyboardType: TextInputType.phone,
-                  textInputAction: TextInputAction.next,
                   controller: phoneController,
-                  decoration: ViewModel.getInputDecoration(
-                      hint: 'Phone',
-                      darkMode: ViewModel.isDarkMode(context),
-                      errorColor: Theme.of(context).errorColor),
+                  obscureText: false,
+                  decoration: InputDecoration(
+                    labelText: 'Phone Number',
+                    labelStyle: TextStyle(color: Colors.black),
+                    hintText: 'Your Phone..',
+                    hintStyle: TextStyle(color: Colors.blue),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.black,
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: black,
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0x00000000),
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0x00000000),
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                    contentPadding:
+                        EdgeInsetsDirectional.fromSTEB(20, 24, 0, 24),
+                  ),
+                  style: TextStyle(color: Colors.black),
                 ),
-              ),
-              SizedBox(
-                height: 16,
               ),
               Padding(
-                padding:
-                    const EdgeInsets.only(top: 16.0, right: 8.0, left: 8.0),
+                padding: EdgeInsetsDirectional.fromSTEB(16, 16, 16, 0),
                 child: TextFormField(
-                  enabled: enabled,
-                  //Not clickable and not editable
-                  readOnly: readOnly,
-                  keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.next,
                   controller: aboutController,
-                  decoration: ViewModel.getInputDecoration(
-                      hint: 'About',
-                      darkMode: ViewModel.isDarkMode(context),
-                      errorColor: Theme.of(context).errorColor),
+                  obscureText: false,
+                  decoration: InputDecoration(
+                    hintText: 'Enter description here...',
+                    hintStyle: TextStyle(
+                      fontFamily: 'Outfit',
+                      color: Colors.black,
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0xFF000000),
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0xFFF1F4F8),
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0x00000000),
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0x00000000),
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    contentPadding:
+                        EdgeInsetsDirectional.fromSTEB(20, 32, 20, 12),
+                  ),
+                  style: TextStyle(
+                    fontFamily: 'Outfit',
+                    color: Color(0xFF14181B),
+                    fontSize: 14,
+                    fontWeight: FontWeight.normal,
+                  ),
+                  textAlign: TextAlign.start,
+                  maxLines: 4,
+                  keyboardType: TextInputType.multiline,
                 ),
               ),
               SizedBox(
                 height: 16,
               ),
-              // Padding(
-              //   padding:
-              //       const EdgeInsets.only(right: 40.0, left: 40.0, top: 40.0),
-              //   child: ElevatedButton(
-              //       style: ElevatedButton.styleFrom(
-              //         fixedSize: Size.fromWidth(
-              //             MediaQuery.of(context).size.width / 1.5),
-              //         backgroundColor: black,
-              //         padding: const EdgeInsets.only(top: 16, bottom: 16),
-              //         shape: RoundedRectangleBorder(
-              //           borderRadius: BorderRadius.circular(25.0),
-              //           side: const BorderSide(
-              //             color: black,
-              //           ),
-              //         ),
-              //       ),
-              //       child: Text(
-              //         title,
-              //         style: const TextStyle(
-              //           fontSize: 20,
-              //           fontWeight: FontWeight.bold,
-              //           color: Colors.white,
-              //         ),
-              //       ),
-              //       onPressed: () async {
-              //         setState(() {
-              //           enabled = !enabled;
-              //           readOnly = !readOnly;
-              //           title = enabled ? "Save" : "Edit";
-              //           if (!enabled) updateUser();
-              //         });
-              //       }),
-              // ),
+              if (user.roletype == "Mechanic")
+                Padding(
+                  padding:
+                      const EdgeInsets.only(right: 40.0, left: 40.0, top: 40.0),
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: Size.fromWidth(
+                            MediaQuery.of(context).size.width / 1.5),
+                        backgroundColor: black,
+                        padding: const EdgeInsets.only(top: 16, bottom: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                          side: const BorderSide(
+                            color: black,
+                          ),
+                        ),
+                      ),
+                      child: const Text(
+                        'Enter More Information',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      onPressed: () async {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RoundCheckBox(
+                                      user: user,
+                                    )));
+                      }),
+                ),
               Padding(
                 padding:
                     const EdgeInsets.only(right: 40.0, left: 40.0, top: 40.0),

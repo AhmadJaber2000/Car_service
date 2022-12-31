@@ -26,12 +26,12 @@ class User {
   String phoneNumber;
 
   bool isOnline;
+  bool activestate;
   String lastActive;
   String pushToken;
   String about;
   String createdAt;
-  String comment;
-  List<String> commentitem = [];
+  double rateSum;
 
   User(
       {this.email = '',
@@ -40,12 +40,13 @@ class User {
       this.lastActive = '',
       this.createdAt = '',
       this.isOnline = false,
-      this.comment = '',
       this.firstName = '',
       this.lastName = '',
       this.userID = '',
       this.lat = 0,
+      this.activestate = false,
       this.long = 0,
+      this.rateSum = 0,
       this.profilePictureURL = '',
       this.rate = 0,
       this.phoneNumber = '',
@@ -72,7 +73,8 @@ class User {
       lastActive: parsedJson['last_active'] ?? '',
       pushToken: parsedJson['push_token'] ?? '',
       createdAt: parsedJson['created_at'] ?? '',
-      comment: parsedJson['comment'] ?? '',
+      activestate: parsedJson["activestate"] ?? false,
+      rateSum: parsedJson["rateSum"] ?? 0.0,
     );
   }
 
@@ -94,8 +96,8 @@ class User {
       'created_at': createdAt,
       'last_active': lastActive,
       'push_token': pushToken,
-      'comment': comment,
-      'commentitem': comment,
+      "activestate": activestate,
+      'rateSum': rateSum,
     };
   }
 

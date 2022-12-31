@@ -26,11 +26,13 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUpScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   Uint8List? _imageData;
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _key = GlobalKey();
   String? firstName, lastName, email, password, confirmPassword, phonenumber;
   double? lat, long;
+  // int? countRate;
   AutovalidateMode _validate = AutovalidateMode.disabled;
   bool acceptEULA = false;
   String userType = 'Customer';
@@ -52,6 +54,7 @@ class _SignUpState extends State<SignUpScreen> {
                   context.read<LoadingCubit>().hideLoading();
                   if (state.authState == AuthState.authenticated) {
                     FireStoreUtils.updateActiveStatus(true);
+                    FireStoreUtils.updateAvailablestate(false);
                     return ViewModel.route(context);
                   } else {
                     ViewModel.showSnackBar(
@@ -67,19 +70,21 @@ class _SignUpState extends State<SignUpScreen> {
                     await context.read<LoadingCubit>().showLoading(
                         context, 'Creating new account, Please wait...', false);
                     if (!mounted) return;
-                    context.read<AuthenticationBloc>().add(
-                        SignupWithEmailAndPasswordEvent(
-                            emailAddress: email!,
-                            password: password!,
-                            imageData: _imageData,
-                            lastName: lastName,
-                            firstName: firstName,
-                            userType: userType,
-                            lat: lat,
-                            createdAt: DateTime.now().toString(),
-                            phonenumber: phonenumber,
-                            rate: 0,
-                            long: long));
+                    context
+                        .read<AuthenticationBloc>()
+                        .add(SignupWithEmailAndPasswordEvent(
+                          emailAddress: email!,
+                          password: password!,
+                          imageData: _imageData,
+                          lastName: lastName,
+                          firstName: firstName,
+                          userType: userType,
+                          lat: lat,
+                          createdAt: DateTime.now().toString(),
+                          phonenumber: phonenumber,
+                          rate: 0,
+                          long: long,
+                        ));
                   } else if (state is SignUpFailureState) {
                     ViewModel.showSnackBar(context, state.errorMessage);
                   }

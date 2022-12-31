@@ -68,9 +68,9 @@ dependencies:
   loading_overlay: ^0.3.0
   like_button: ^2.0.4
   flutter_chat_bubble: ^2.0.0
-  permission_handler: ^10.1.0
-  story: ^0.8.0
-  story_view: ^0.14.0
+  permission_handler:
+  story:
+  story_view:
   custom_navigation_bar:
   eva_icons_flutter:
   page_transition:
@@ -78,7 +78,63 @@ dependencies:
   flutter_launcher_icons:
   line_icons:
   dotted_border:
-  contactus: ^1.2.0
+  contactus:
+  auto_size_text:
+  built_collection:
+  built_value:
+
+  cloud_firestore_platform_interface:
+  cloud_firestore_web:
+
+  firebase_auth_platform_interface:
+  firebase_auth_web:
+
+  firebase_core_platform_interface:
+  firebase_core_web:
+  flutter_credit_card:
+  flip_card: 0.6.0
+  flutter_animate: 1.0.0
+  flutter_cache_manager:
+  checkbox_grouped:
+
+  dash_chat: 1.1.16
+
+
+
+  sqflite: 2.2.0+2
+
+
+
+  from_css_color:
+
+  google_maps:
+
+  google_maps_flutter_platform_interface:
+  google_maps_flutter_web:
+
+  google_sign_in_ios:
+  google_sign_in_platform_interface:
+  google_sign_in_web:
+
+  image_picker_android:
+
+  image_picker_ios:
+  image_picker_platform_interface:
+
+  json_path:
+  json_serializable:
+  mime_type:
+
+
+  plugin_platform_interface:
+
+  rxdart:
+
+  sign_in_with_apple:
+  sign_in_with_apple_platform_interface:
+  sign_in_with_apple_web:
+
+
 
 
 

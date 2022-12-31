@@ -46,6 +46,7 @@ class _LoginPageState extends State<LoginScreen> {
                   await context.read<LoadingCubit>().hideLoading();
                   if (state.authState == AuthState.authenticated) {
                     FireStoreUtils.updateActiveStatus(true);
+                    FireStoreUtils.updateAvailablestate(false);
                     return ViewModel.route(context);
                   } else {
                     if (!mounted) return;

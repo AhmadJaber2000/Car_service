@@ -1,5 +1,7 @@
 import 'package:Car_service/ChatIn/api/apis.dart';
 import 'package:Car_service/List_User/ListUserByRate.dart';
+import 'package:Car_service/authenticate/service/authenticate.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../../googlemap/service/location_service.dart';
 import '../../model/roleType.dart';
@@ -8,6 +10,7 @@ import '../../smarthome/Model/homeinfodata.dart';
 import '../../tools/constants.dart';
 import 'drawer.dart';
 import '../../googlemap/view/roleTypeGoogleMapPage.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 
 class UserNormalPage extends StatefulWidget {
   const UserNormalPage({Key? key}) : super(key: key);
@@ -20,6 +23,7 @@ class _UserNormalPageState extends State<UserNormalPage>
     with TickerProviderStateMixin {
   late TabController _tabController;
   List<HomeInfoModel> homeInfoData = HomeInfoData().infoData;
+  static auth.User? get user => auth.FirebaseAuth.instance.currentUser;
 
   @override
   void initState() {
@@ -66,6 +70,15 @@ class _UserNormalPageState extends State<UserNormalPage>
       ),
       backgroundColor: Color(0xffb2d8d8),
     );
+  }
+
+  Future<User?> readUser() async {
+    final docUser =
+        FirebaseFirestore.instance.collection(usersCollection).doc(user!.uid);
+    final snapshot = await docUser.get();
+    if (snapshot.exists) {
+      return User.fromJson(snapshot.data()!);
+    }
   }
 
   buildContainer(String title, String type, String image) {

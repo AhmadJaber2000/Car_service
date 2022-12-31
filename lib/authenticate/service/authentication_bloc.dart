@@ -98,9 +98,8 @@ class AuthenticationBloc
           userType: event.userType,
           long: event.long,
           lat: event.lat,
-          rate: event.rate!,
-          phonenumber: event.phonenumber!
-      );
+          rate: event.rate,
+          phonenumber: event.phonenumber);
       if (result != null && result is User) {
         user = result;
         emit(AuthenticationState.authenticated(user!));

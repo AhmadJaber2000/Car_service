@@ -352,8 +352,7 @@ class _GoogleMapViewState extends State<GoogleMapView> {
                                                                     stars!;
                                                               });
                                                               print(user.rate);
-                                                              print(user
-                                                                  .commentitem);
+
                                                               await FireStoreUtils
                                                                   .updateCurrentUser(
                                                                       user);

@@ -40,6 +40,8 @@ class SignupWithEmailAndPasswordEvent extends AuthenticationEvent {
   double? rate;
   String? phonenumber;
   String createdAt;
+  double? rateCount;
+  double? rateSum;
 
   SignupWithEmailAndPasswordEvent(
       {required this.emailAddress,
@@ -48,6 +50,8 @@ class SignupWithEmailAndPasswordEvent extends AuthenticationEvent {
       this.lat,
       required this.createdAt,
       this.long,
+      this.rateSum,
+      this.rateCount,
       this.phonenumber,
       this.rate,
       this.firstName = 'Anonymous',
