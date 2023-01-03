@@ -96,6 +96,7 @@ dependencies:
   flutter_animate: 1.0.0
   flutter_cache_manager:
   checkbox_grouped:
+  video_player:
 
   dash_chat: 1.1.16
 
@@ -167,15 +168,19 @@ flutter_icons:
   android: false
   ios: true
   remove_alpha_ios: true
-  image_path: android/app/src/main/ic_launcher-playstore.png
+  image_path: android/app/src/main/carservice_modified.png
   fonts:
     - family: myfont
       fonts:
-        - asset: assets/fonts/Montserrat-VariableFont_wght.ttf
+        - asset: fonts/Montserrat-VariableFont_wght.ttf
+
+
 
 flutter:
   uses-material-design: true
+
   assets:
     - assets/images/
     - assets/images/admin.png
     - assets/icons/
+    - assets/fonts/

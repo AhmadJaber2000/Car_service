@@ -34,10 +34,10 @@ class WelcomeScreen extends StatelessWidget {
                 children: <Widget>[
                   Center(
                     child: Image.asset(
-                      'assets/images/img.png',
-                      width: 150.0,
+                      'assets/images/CAR SERVICE_free-file.png',
+                      width: MediaQuery.of(context).size.width,
                       height: 150.0,
-                      fit: BoxFit.cover,
+                      fit: BoxFit.contain,
                     ),
                   ),
                   const Padding(
@@ -47,8 +47,9 @@ class WelcomeScreen extends StatelessWidget {
                       'Welcome to Our Car Service App!',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                          color: Color(0xffd3a625),
+                          color: Color(0xff000000),
                           fontSize: 24.0,
+                          fontFamily: "CreteRound",
                           fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -56,7 +57,7 @@ class WelcomeScreen extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 40, vertical: 16),
                     child: Text(
                       'You\'ve just saved a week of development and headaches.',
-                      style: TextStyle(fontSize: 18, color: Color(0xffd3a625)),
+                      style: TextStyle(fontSize: 18, color: Color(0xff000000)),
                       textAlign: TextAlign.center,
                     ),
                   ),

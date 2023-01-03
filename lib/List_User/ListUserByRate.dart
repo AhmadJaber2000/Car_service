@@ -29,6 +29,7 @@ class _ListMechanicByRateState extends State<ListMechanicByRate> {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   final TextEditingController _commentController = TextEditingController();
+  static path.User? get users => path.FirebaseAuth.instance.currentUser;
 
   List<User> user = [];
   final String useruid = path.FirebaseAuth.instance.currentUser!.uid;
@@ -150,180 +151,185 @@ class _ListMechanicByRateState extends State<ListMechanicByRate> {
             // ),
           ],
         ),
-        Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => RoleTypeGoogleMapPage(
-                                    userType: user.roletype,
-                                    service: "location",
-                                    roleType: user.roletype,
-                                  )));
-                    },
-                    child: buildChoice(
-                        "location",
-                        const Icon(
-                          Icons.location_pin,
-                          color: Colors.red,
-                        ))),
-              ),
-              Expanded(
+        if (user.userID != users!.uid)
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
                   child: GestureDetector(
                       onTap: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ChatScreen(user: user)));
+                                builder: (context) => RoleTypeGoogleMapPage(
+                                      userType: user.roletype,
+                                      service: "location",
+                                      roleType: user.roletype,
+                                    )));
+                      },
+                      child: buildChoice(
+                          "location",
+                          const Icon(
+                            Icons.location_pin,
+                            color: Colors.red,
+                          ))),
+                ),
+                Expanded(
+                    child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      ChatScreen(user: user)));
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => ChatWindow()));
+                        },
+                        child: buildChoice(
+                            "Chat",
+                            const Icon(
+                              Icons.chat,
+                              color: Color(0xff317873),
+                            )))),
+                Expanded(
+                  child: GestureDetector(
+                      onTap: () async {
+                        // FireStoreUtils.getUserInfo(user);
+                        // await FirebaseFirestore.instance
+                        //     .collection(usersCollection)
+                        //     .doc(user.userID)
+                        //     .update({"rateCount": FieldValue.increment(1)});
+                        counter++;
+                        print(counter);
+
+                        RateMyApp _rateMyApp = RateMyApp(
+                          preferencesPrefix: 'Rate This User',
+                          minDays: 3,
+                          minLaunches: 7,
+                          remindDays: 2,
+                          remindLaunches: 5,
+                        );
+                        _rateMyApp.init().then((_) {
+                          // if (_rateMyApp.shouldOpenDialog) {
+                          _rateMyApp.showStarRateDialog(
+                            context,
+                            title: 'Enjoying Flutter Rating Prompt?',
+                            message: 'Please leave a rating!',
+                            actionsBuilder: (context, stars) {
+                              return [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: TextField(
+                                    controller: _commentController,
+                                    decoration: InputDecoration(
+                                      hintText: 'Enter a comment',
+                                    ),
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    ElevatedButton(
+                                      child: Text('OK'),
+                                      onPressed: () async {
+                                        double? star = stars;
+                                        FireStoreUtils.sendCommentForuser(
+                                            _commentController.text,
+                                            user.userID);
+                                        _commentController.clear();
+                                        // FirebaseFirestore.instance
+                                        //     .collection(usersCollection)
+                                        //     .doc(user.userID)
+                                        //     .update({
+                                        //       'rateSum': stars
+                                        //     }) // <-- Updated data
+                                        //     .then((_) => print('Success'))
+                                        //     .catchError((error) =>
+                                        //         print('Failed: $error'));
+
+                                        SumOfRate += star!;
+                                        print(SumOfRate);
+                                        print(
+                                            'HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII');
+
+                                        User userd = User();
+                                        double avg = SumOfRate / counter;
+                                        print(
+                                            'HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII');
+                                        print(avg);
+                                        print(
+                                            'HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII');
+                                        Future<User?> updateUser() async {
+                                          print("update");
+                                          setState(() {
+                                            user.rate = avg;
+                                          });
+                                          print(user.rateSum);
+                                          await FireStoreUtils
+                                              .updateCurrentUser(user);
+                                        }
+
+                                        setState(() {
+                                          updateUser();
+                                        });
+
+                                        Navigator.pop(context);
+                                        commentController.clear();
+                                      },
+                                    ),
+                                    // ElevatedButton(
+                                    //   child: Text('Send'),
+                                    //   onPressed: () async {
+                                    //     double? star = stars;
+                                    //     FireStoreUtils.sendCommentForuser(
+                                    //         _commentController.text, user.userID);
+                                    //     setState(() async {
+                                    //       await FirebaseFirestore.instance
+                                    //           .collection(usersCollection)
+                                    //           .doc(user.userID)
+                                    //           .update({
+                                    //         "rateSum": FieldValue.increment(star!)
+                                    //       });
+                                    //     });
+                                    //
+                                    //     _commentController.clear();
+                                    //     Navigator.pop(context);
+                                    //   },
+                                    // ),
+                                  ],
+                                )
+                              ];
+                            },
+                            dialogStyle: DialogStyle(
+                              titleAlign: TextAlign.center,
+                              messageAlign: TextAlign.center,
+                              messagePadding: EdgeInsets.only(bottom: 20.0),
+                            ),
+                            starRatingOptions: StarRatingOptions(),
+                          );
+                          // }
+                        });
                         // Navigator.push(
                         //     context,
                         //     MaterialPageRoute(
-                        //         builder: (context) => ChatWindow()));
+                        //         builder: (context) => RoleTypeGoogleMapPage(
+                        //               userType: user.roletype,
+                        //               service: "location",
+                        //               roleType: user.roletype,
+                        //             )));
                       },
                       child: buildChoice(
-                          "Chat",
+                          "Rate",
                           const Icon(
-                            Icons.chat,
+                            Icons.star_rate,
                             color: Color(0xff317873),
-                          )))),
-              Expanded(
-                child: GestureDetector(
-                    onTap: () async {
-                      // FireStoreUtils.getUserInfo(user);
-                      // await FirebaseFirestore.instance
-                      //     .collection(usersCollection)
-                      //     .doc(user.userID)
-                      //     .update({"rateCount": FieldValue.increment(1)});
-                      counter++;
-                      print(counter);
-
-                      RateMyApp _rateMyApp = RateMyApp(
-                        preferencesPrefix: 'Rate This User',
-                        minDays: 3,
-                        minLaunches: 7,
-                        remindDays: 2,
-                        remindLaunches: 5,
-                      );
-                      _rateMyApp.init().then((_) {
-                        // if (_rateMyApp.shouldOpenDialog) {
-                        _rateMyApp.showStarRateDialog(
-                          context,
-                          title: 'Enjoying Flutter Rating Prompt?',
-                          message: 'Please leave a rating!',
-                          actionsBuilder: (context, stars) {
-                            return [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: TextField(
-                                  controller: _commentController,
-                                  decoration: InputDecoration(
-                                    hintText: 'Enter a comment',
-                                  ),
-                                ),
-                              ),
-                              Row(
-                                children: [
-                                  ElevatedButton(
-                                    child: Text('OK'),
-                                    onPressed: () async {
-                                      double? star = stars;
-                                      FireStoreUtils.sendCommentForuser(
-                                          _commentController.text, user.userID);
-                                      _commentController.clear();
-                                      FirebaseFirestore.instance
-                                          .collection(usersCollection)
-                                          .doc(user.userID)
-                                          .update({
-                                            'rateSum': stars
-                                          }) // <-- Updated data
-                                          .then((_) => print('Success'))
-                                          .catchError((error) =>
-                                              print('Failed: $error'));
-
-                                      SumOfRate += star!;
-                                      print(SumOfRate);
-                                      print(
-                                          'HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII');
-
-                                      User userd = User();
-                                      double avg = SumOfRate / counter;
-                                      print(
-                                          'HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII');
-                                      print(avg);
-                                      Future<User?> updateUser() async {
-                                        print("update");
-                                        setState(() {
-                                          user.rate = avg;
-                                        });
-                                        print(user.rateSum);
-                                        await FireStoreUtils.updateCurrentUser(
-                                            user);
-                                      }
-
-                                      setState(() {
-                                        updateUser();
-                                      });
-
-                                      Navigator.pop(context);
-                                      commentController.clear();
-                                    },
-                                  ),
-                                  // ElevatedButton(
-                                  //   child: Text('Send'),
-                                  //   onPressed: () async {
-                                  //     double? star = stars;
-                                  //     FireStoreUtils.sendCommentForuser(
-                                  //         _commentController.text, user.userID);
-                                  //     setState(() async {
-                                  //       await FirebaseFirestore.instance
-                                  //           .collection(usersCollection)
-                                  //           .doc(user.userID)
-                                  //           .update({
-                                  //         "rateSum": FieldValue.increment(star!)
-                                  //       });
-                                  //     });
-                                  //
-                                  //     _commentController.clear();
-                                  //     Navigator.pop(context);
-                                  //   },
-                                  // ),
-                                ],
-                              )
-                            ];
-                          },
-                          dialogStyle: DialogStyle(
-                            titleAlign: TextAlign.center,
-                            messageAlign: TextAlign.center,
-                            messagePadding: EdgeInsets.only(bottom: 20.0),
-                          ),
-                          starRatingOptions: StarRatingOptions(),
-                        );
-                        // }
-                      });
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => RoleTypeGoogleMapPage(
-                      //               userType: user.roletype,
-                      //               service: "location",
-                      //               roleType: user.roletype,
-                      //             )));
-                    },
-                    child: buildChoice(
-                        "Rate",
-                        const Icon(
-                          Icons.star_rate,
-                          color: Color(0xff317873),
-                        ))),
-              ),
-            ],
+                          ))),
+                ),
+              ],
+            ),
           ),
-        ),
       ]),
     );
   }

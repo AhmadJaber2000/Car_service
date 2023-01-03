@@ -211,25 +211,25 @@ class _UserMechanicPageState extends State<UserMechanicPage>
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Expanded(
-                  child: GestureDetector(
-                      onTap: () {
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => RoleTypeGoogleMapPage(
-                        //               userType: title,
-                        //               service: "location",
-                        //               roleType: type,
-                        //             )));
-                      },
-                      child: buildChoice(
-                          "location",
-                          const Icon(
-                            Icons.location_pin,
-                            color: Colors.red,
-                          ))),
-                ),
+                // Expanded(
+                //   child: GestureDetector(
+                //       onTap: () {
+                //         // Navigator.push(
+                //         //     context,
+                //         //     MaterialPageRoute(
+                //         //         builder: (context) => RoleTypeGoogleMapPage(
+                //         //               userType: title,
+                //         //               service: "location",
+                //         //               roleType: type,
+                //         //             )));
+                //       },
+                //       child: buildChoice(
+                //           "location",
+                //           const Icon(
+                //             Icons.location_pin,
+                //             color: Colors.red,
+                //           ))),
+                // ),
                 Expanded(
                     child: GestureDetector(
                         onTap: () {

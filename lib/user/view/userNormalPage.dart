@@ -36,39 +36,70 @@ class _UserNormalPageState extends State<UserNormalPage>
     final bool isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
 
-    return Scaffold(
-      drawer: const DrawerView(),
-      appBar: (AppBar(
-        brightness: Brightness.light,
-        backgroundColor: Color(0xff004c4c),
-        elevation: 0,
-        title: Text(
-          'Home',
-          style: TextStyle(color: Colors.white),
-        ),
-        centerTitle: true,
-      )),
-      body: Container(
-        color: Color(0xffb2d8d8),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text("What are you looking for ?",
-                style: TextStyle(
-                    color: Color(0xff008080),
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold)),
-            const SizedBox(
-              height: 30,
+    return Stack(
+      children: [
+        Scaffold(
+          drawer: const DrawerView(),
+          appBar: (AppBar(
+            brightness: Brightness.light,
+            backgroundColor: Color(0xff004c4c),
+            elevation: 0,
+            title: Text(
+              'Home',
+              style: TextStyle(color: Colors.white),
             ),
-            buildContainer("Mechanics", RoleType.mechanic,
-                "assets/images/car-repair-illustration-concept-vector-fococlipping-standard.png"),
-            buildContainer("Trucks", RoleType.truck,
-                "assets/images/towing-fococlipping-standard.png"),
-          ],
-        ),
-      ),
-      backgroundColor: Color(0xffb2d8d8),
+            centerTitle: true,
+          )),
+          body: SingleChildScrollView(
+            child: Container(
+              color: Color(0xffb2d8d8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                // mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                          child: Align(
+                        child: Image.asset(
+                          'assets/images/StartServiceIMG-transformed.jpeg',
+                          height: MediaQuery.of(context).size.width,
+                          width: MediaQuery.of(context).size.width,
+                        ),
+                      ))
+                    ],
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  const Text(
+                    "What are you looking for ?",
+                    style: TextStyle(
+                        color: Color(0xff008080),
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Column(
+                    children: [
+                      buildContainer("Mechanics", RoleType.mechanic,
+                          "assets/images/car-repair-illustration-concept-vector-fococlipping-standard.png"),
+                      buildContainer("Trucks", RoleType.truck,
+                          "assets/images/towing-fococlipping-standard.png"),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          backgroundColor: Color(0xffb2d8d8),
+        )
+      ],
     );
   }
 

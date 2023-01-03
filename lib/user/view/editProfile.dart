@@ -27,6 +27,8 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController aboutController = TextEditingController();
+  TextEditingController WorkShopsController = TextEditingController();
+
   User user = User();
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   bool enabled = false; //Not clickable and not editable
@@ -64,6 +66,7 @@ class _EditProfileState extends State<EditProfile> {
     Icons.check_circle_outline,
     Icons.check_circle_outline
   ];
+
   @override
   void initState() {
     // TODO: implement initState
@@ -125,6 +128,7 @@ class _EditProfileState extends State<EditProfile> {
       emailController.text = user.email;
       phoneController.text = user.phoneNumber;
       aboutController.text = user.about;
+      WorkShopsController.text = user.fixedLocation;
     });
   }
 
@@ -132,6 +136,7 @@ class _EditProfileState extends State<EditProfile> {
   final GlobalKey<FormState> _key = GlobalKey();
   AutovalidateMode _validate = AutovalidateMode.disabled;
   bool _lights = false;
+
   // String Title = _lights ? "Active" : "Not Active";
 
   Widget buildUser(User user) {
@@ -197,12 +202,13 @@ class _EditProfileState extends State<EditProfile> {
               if (user.roletype == "Mechanic" || user.roletype == "Truck")
                 SwitchListTile(
                   value: _lights,
-                  onChanged: (bool value) {
+                  onChanged: (bool value) async {
                     setState(() {
                       _lights = value;
                       title;
                     });
-                    FireStoreUtils.updateAvailablestate(value);
+                    await FireStoreUtils.updateAvailablestate(value);
+                    value = _lights;
                   },
                   activeColor: Colors.green,
                   title: Text(
@@ -406,9 +412,65 @@ class _EditProfileState extends State<EditProfile> {
                   style: TextStyle(color: Colors.black),
                 ),
               ),
+              SizedBox(
+                height: 16,
+              ),
+              if (user.roletype == "Mechanic")
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(20, 0, 20, 12),
+                  child: TextFormField(
+                    //Not clickable and not editable
+                    readOnly: readOnly,
+                    controller: WorkShopsController,
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      labelText: 'Maintenance WorkShop Location',
+                      labelStyle: TextStyle(color: Colors.black),
+                      hintText: 'Enter Maintenance WorkShop Location',
+                      hintStyle: TextStyle(color: Colors.blue),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.black,
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: black,
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color(0x00000000),
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color(0x00000000),
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                      contentPadding:
+                          EdgeInsetsDirectional.fromSTEB(20, 24, 0, 24),
+                    ),
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+              SizedBox(
+                height: 16,
+              ),
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(16, 16, 16, 0),
                 child: TextFormField(
+                  readOnly: readOnly,
                   controller: aboutController,
                   obscureText: false,
                   decoration: InputDecoration(
@@ -733,6 +795,7 @@ class _EditProfileState extends State<EditProfile> {
       user.email = emailController.text!;
       user.phoneNumber = phoneController.text!;
       user.about = aboutController.text!;
+      user.fixedLocation = WorkShopsController.text!;
     });
     print(user.firstName);
     await FireStoreUtils.updateCurrentUser(user);

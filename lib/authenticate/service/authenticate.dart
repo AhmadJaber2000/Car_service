@@ -574,29 +574,32 @@ class FireStoreUtils {
 
   static Future<List<User>> getAllUserRole(String type, String uid) async {
     List<User> users = [];
+    print(user!.uid);
     print(uid);
     print("type $type");
-    QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
-        .collection(usersCollection)
-        // .where('rate', isGreaterThanOrEqualTo: 2)
-        .where('roletype', isEqualTo: type)
-        .where('id', isNotEqualTo: uid)
-        .get();
-
-    print("LENGTH ${querySnapshot.docs.length}");
-    for (int i = 0; i < querySnapshot.docs.length; i++) {
-      var a = querySnapshot.docs[i];
-      print("rate ${a.get("rate")}");
-      users.add(await User(
-          firstName: a.get("firstName"),
-          lastName: a.get("lastName"),
-          email: a.get("email"),
-          lat: a.get("lat"),
-          long: a.get("long"),
-          roletype: a.get("roletype"),
-          rate: a.get("rate"),
-          phoneNumber: a.get('phoneNumber'),
-          userID: a.get('id')));
+    if (user!.uid != null) {
+      QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestore
+          .collection(usersCollection)
+          .where('roletype', isEqualTo: type)
+          .where('rate', isGreaterThanOrEqualTo: 2.5)
+          .orderBy('rate', descending: true)
+          .get();
+      print("LENGTH ${querySnapshot.docs.length}");
+      for (int i = 0; i < querySnapshot.docs.length; i++) {
+        var a = querySnapshot.docs[i];
+        print("rate ${a.get("rate")}");
+        users.add(await User(
+            firstName: a.get("firstName"),
+            lastName: a.get("lastName"),
+            email: a.get("email"),
+            lat: a.get("lat"),
+            long: a.get("long"),
+            roletype: a.get("roletype"),
+            rate: a.get("rate"),
+            phoneNumber: a.get('phoneNumber'),
+            userID: a.get('id'),
+            activestate: a.get('activestate')));
+      }
     }
     return users;
   }

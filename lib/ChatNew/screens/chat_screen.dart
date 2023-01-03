@@ -140,12 +140,12 @@ class _ChatScreenState extends State<ChatScreen> {
     Size mq = MediaQuery.of(context).size;
 
     return InkWell(
-        // onTap: () {
-        //   Navigator.push(
-        //       context,
-        //       MaterialPageRoute(
-        //           builder: (_) => ViewProfileScreen(user: widget.user)));
-        // },
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => ViewProfileScreen(user: widget.user)));
+        },
         child: StreamBuilder(
             stream: FireStoreUtils.getUserInfo(widget.user),
             builder: (context, snapshot) {

@@ -32,6 +32,7 @@ class User {
   String about;
   String createdAt;
   double rateSum;
+  String fixedLocation;
 
   User(
       {this.email = '',
@@ -43,6 +44,7 @@ class User {
       this.firstName = '',
       this.lastName = '',
       this.userID = '',
+      this.fixedLocation = '',
       this.lat = 0,
       this.activestate = false,
       this.long = 0,
@@ -75,6 +77,7 @@ class User {
       createdAt: parsedJson['created_at'] ?? '',
       activestate: parsedJson["activestate"] ?? false,
       rateSum: parsedJson["rateSum"] ?? 0.0,
+      fixedLocation: parsedJson['fixedLocation'] ?? '',
     );
   }
 
@@ -98,6 +101,7 @@ class User {
       'push_token': pushToken,
       "activestate": activestate,
       'rateSum': rateSum,
+      'fixedLocation': fixedLocation,
     };
   }
 

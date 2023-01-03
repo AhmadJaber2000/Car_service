@@ -16,7 +16,9 @@ import 'package:rate_my_app/rate_my_app.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../ChatNew/screens/home_screen.dart';
+import '../../ChatNew/screens/view_profile_screen.dart';
 import '../../model/user.dart';
+import '../../startpoint/GlobalVar.dart';
 import '../../tools/constants.dart';
 import '../service/location_service.dart';
 
@@ -33,6 +35,7 @@ class GoogleMapView extends StatefulWidget {
 class _GoogleMapViewState extends State<GoogleMapView> {
   Set<Marker> myMarkers = HashSet<Marker>();
   final Completer<GoogleMapController> _controller = Completer();
+  final TextEditingController _commentController = TextEditingController();
 
   late BitmapDescriptor customDescriptor;
   late LocationData myLocation;
@@ -129,8 +132,6 @@ class _GoogleMapViewState extends State<GoogleMapView> {
   bool isLoading = false;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  final TextEditingController _commentController = TextEditingController();
-
   setMarkers() {
     for (User user in users) {
       String phone = user.phoneNumber;
@@ -179,26 +180,33 @@ class _GoogleMapViewState extends State<GoogleMapView> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(user.fullName(),
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 30,
-                                        fontWeight: FontWeight.bold)),
+                                GestureDetector(
+                                  child: Text(user.fullName(),
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.bold)),
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ViewProfileScreen(
+                                                  user: user,
+                                                )));
+                                    print("Hi");
+                                  },
+                                ),
                                 const SizedBox(
                                   height: 20,
-                                ),
-                                const Icon(
-                                  Icons.add_call,
-                                  color: Colors.cyan,
-                                  size: 20,
                                 ),
                                 const SizedBox(
                                   width: 20,
                                 ),
-                                Text(" Rate : ${user.rate}",
+                                Text(" Rate : ${user.rate.toStringAsFixed(2)}",
                                     style: TextStyle(
                                         color: Colors.cyan,
-                                        fontSize: 30,
+                                        fontSize: 20,
                                         fontWeight: FontWeight.bold))
                                 // Image.asset(
                                 //   user.email,
@@ -286,7 +294,15 @@ class _GoogleMapViewState extends State<GoogleMapView> {
                                                 )))),
                                     Expanded(
                                       child: GestureDetector(
-                                          onTap: () {
+                                          onTap: () async {
+                                            // FireStoreUtils.getUserInfo(user);
+                                            // await FirebaseFirestore.instance
+                                            //     .collection(usersCollection)
+                                            //     .doc(user.userID)
+                                            //     .update({"rateCount": FieldValue.increment(1)});
+                                            counter++;
+                                            print(counter);
+
                                             RateMyApp _rateMyApp = RateMyApp(
                                               preferencesPrefix:
                                                   'Rate This User',
@@ -323,36 +339,54 @@ class _GoogleMapViewState extends State<GoogleMapView> {
                                                     Row(
                                                       children: [
                                                         ElevatedButton(
-                                                          child: Text('Send'),
+                                                          child: Text('OK'),
                                                           onPressed: () async {
                                                             double? star =
                                                                 stars;
-                                                            await firestore
-                                                                .collection(
-                                                                    'comments')
-                                                                .add({
-                                                              'text':
-                                                                  _commentController
-                                                                      .text,
-                                                              'userId':
-                                                                  user.userID,
-                                                              'timestamp':
-                                                                  FieldValue
-                                                                      .serverTimestamp(),
-                                                            });
+                                                            FireStoreUtils
+                                                                .sendCommentForuser(
+                                                                    _commentController
+                                                                        .text,
+                                                                    user.userID);
                                                             _commentController
                                                                 .clear();
+                                                            FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    usersCollection)
+                                                                .doc(
+                                                                    user.userID)
+                                                                .update({
+                                                                  'rateSum':
+                                                                      stars
+                                                                }) // <-- Updated data
+                                                                .then((_) => print(
+                                                                    'Success'))
+                                                                .catchError(
+                                                                    (error) =>
+                                                                        print(
+                                                                            'Failed: $error'));
+
+                                                            SumOfRate += star!;
+                                                            print(SumOfRate);
+                                                            print(
+                                                                'HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII');
 
                                                             User userd = User();
+                                                            double avg =
+                                                                SumOfRate /
+                                                                    counter;
+                                                            print(
+                                                                'HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII');
+                                                            print(avg);
                                                             Future<User?>
                                                                 updateUser() async {
                                                               print("update");
                                                               setState(() {
-                                                                user.rate =
-                                                                    stars!;
+                                                                user.rate = avg;
                                                               });
-                                                              print(user.rate);
-
+                                                              print(
+                                                                  user.rateSum);
                                                               await FireStoreUtils
                                                                   .updateCurrentUser(
                                                                       user);
@@ -368,6 +402,25 @@ class _GoogleMapViewState extends State<GoogleMapView> {
                                                                 .clear();
                                                           },
                                                         ),
+                                                        // ElevatedButton(
+                                                        //   child: Text('Send'),
+                                                        //   onPressed: () async {
+                                                        //     double? star = stars;
+                                                        //     FireStoreUtils.sendCommentForuser(
+                                                        //         _commentController.text, user.userID);
+                                                        //     setState(() async {
+                                                        //       await FirebaseFirestore.instance
+                                                        //           .collection(usersCollection)
+                                                        //           .doc(user.userID)
+                                                        //           .update({
+                                                        //         "rateSum": FieldValue.increment(star!)
+                                                        //       });
+                                                        //     });
+                                                        //
+                                                        //     _commentController.clear();
+                                                        //     Navigator.pop(context);
+                                                        //   },
+                                                        // ),
                                                       ],
                                                     )
                                                   ];
@@ -400,7 +453,7 @@ class _GoogleMapViewState extends State<GoogleMapView> {
                                                 Icons.star_rate,
                                                 color: Color(0xff317873),
                                               ))),
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),

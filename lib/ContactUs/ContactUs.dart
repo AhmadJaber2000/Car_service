@@ -19,10 +19,9 @@ class _ContactPageState extends State<ContactPage> {
       ),
       backgroundColor: Color(0xffb2d8d8),
       body: ContactUs(
-        logo: AssetImage(
-            'assets/images/car-service-logo-template_175455-original (1)-fococlipping-standard.png'),
+        image: Image.asset('assets/images/admin.png'),
         email: 'ahmad.jper.aj@gmail.com',
-        companyName: 'Abhishek Doshi',
+        companyName: 'Admin',
         phoneNumber: '+962786667736',
         dividerThickness: 2,
         website: 'https://abhishekdoshi.godaddysites.com',
