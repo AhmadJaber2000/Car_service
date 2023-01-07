@@ -92,7 +92,7 @@ class _DeleteUserState extends State<DeleteUser> {
             const SizedBox(
               width: 20,
             ),
-            Text(" Rate : ${user.rate}",
+            Text(" Rate : ${user.rate.toStringAsFixed(2)}",
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 20,

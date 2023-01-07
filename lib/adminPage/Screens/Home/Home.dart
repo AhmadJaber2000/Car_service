@@ -22,7 +22,7 @@ class AdminRole extends StatelessWidget {
       appBar: AppBar(
         title: Text("ADMIN"),
         centerTitle: true,
-        backgroundColor: primecolor,
+        backgroundColor: Color(0xff004c4c),
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,

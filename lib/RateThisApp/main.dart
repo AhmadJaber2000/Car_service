@@ -22,12 +22,19 @@ class RateThisApp extends StatelessWidget {
   static final String title = 'Rate My App';
 
   @override
-  Widget build(BuildContext context) => MaterialApp(
-        title: title,
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(primarySwatch: Colors.indigo),
-        home: RateAppInitWidget(
-          builder: (rateMyApp) => HomePage(rateMyApp: rateMyApp),
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          title: Text("Rate This App"),
+          centerTitle: true,
+          backgroundColor: Color(0xff006666),
+        ),
+        body: MaterialApp(
+          title: title,
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(primarySwatch: Colors.indigo),
+          home: RateAppInitWidget(
+            builder: (rateMyApp) => HomePage(rateMyApp: rateMyApp),
+          ),
         ),
       );
 }
@@ -50,14 +57,14 @@ class _HomePageState extends State<HomePage> {
         tabs: [
           Tab(icon: Icon(Icons.open_in_full), text: 'Dialog'),
           Tab(icon: Icon(Icons.rate_review), text: 'Comment'),
-          Tab(icon: Icon(Icons.star_rate_sharp), text: 'Stars'),
-          Tab(icon: Icon(Icons.info_outline_rounded), text: 'Info'),
+          // Tab(icon: Icon(Icons.star_rate_sharp), text: 'Stars'),
+          // Tab(icon: Icon(Icons.info_outline_rounded), text: 'Info'),
         ],
         children: [
           RateDialogPage(rateMyApp: widget.rateMyApp),
           RateCommentPage(rateMyApp: widget.rateMyApp),
-          RateStarsPage(rateMyApp: widget.rateMyApp),
-          RateInfoPage(rateMyApp: widget.rateMyApp),
+          // RateStarsPage(rateMyApp: widget.rateMyApp),
+          // RateInfoPage(rateMyApp: widget.rateMyApp),
         ],
       );
 }

@@ -38,7 +38,7 @@ class _ListAllUserState extends State<ListAllUser> {
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
-        backgroundColor: primecolor,
+        backgroundColor: Color(0xff004c4c),
       ),
       body: StreamBuilder<List<User>>(
           stream: readUsers(),
@@ -93,7 +93,7 @@ class _ListAllUserState extends State<ListAllUser> {
             const SizedBox(
               width: 20,
             ),
-            Text(" Rate : ${user.rate}",
+            Text(" Rate : ${user.rate.toStringAsFixed(2)}",
                 style: TextStyle(
                     color: Color(0xffb2d8d8),
                     fontSize: 20,

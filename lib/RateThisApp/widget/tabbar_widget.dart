@@ -17,32 +17,15 @@ class TabBarWidget extends StatelessWidget {
         length: tabs.length,
         child: Scaffold(
           appBar: AppBar(
-            actions: [
-              IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: const Icon(Icons.more_vert))
-            ],
-            title: Text(title),
+            backgroundColor: Color(0xff006666),
             centerTitle: true,
-            flexibleSpace: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.indigo, Colors.red],
-                  begin: Alignment.bottomRight,
-                  end: Alignment.topLeft,
-                ),
-              ),
-            ),
-            bottom: TabBar(
-              isScrollable: true,
+            flexibleSpace: TabBar(
+              isScrollable: false,
               indicatorColor: Colors.white,
               indicatorWeight: 5,
               tabs: tabs,
             ),
             elevation: 20,
-            titleSpacing: 20,
           ),
           body: TabBarView(children: children),
         ),
